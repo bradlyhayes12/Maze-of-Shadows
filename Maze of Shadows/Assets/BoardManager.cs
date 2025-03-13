@@ -23,8 +23,8 @@ public class BoardManager : MonoBehaviour
                 {
                     // Create a tile at (x, y) in world space
                     Vector3 spawnPos = new Vector3(x * tileSize, y * tileSize, 0f);
-                    GameObject tileObj = Instantiate(tilePrefab, spawnPos, Quaternion.identity);
-                    tileObj.transform.SetParent(transform);
+                    GameObject tileObj = Instantiate(tilePrefab, spawnPos, Quaternion.identity); // create instance of the tile prefab
+                    tileObj.transform.SetParent(transform); // set the parent of the tile to the buildboard gameobject 
 
                     // Set up the tile's script
                     TileController tile = tileObj.GetComponent<TileController>();
