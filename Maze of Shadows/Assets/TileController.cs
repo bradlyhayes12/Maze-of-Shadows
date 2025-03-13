@@ -1,66 +1,90 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TileController : MonoBehaviour
 {
     public BoardManager boardManager;
-    public int x; // Board coordinate
-    public int y; // Board coordinate
+    public int x;  // Board coordinate (left->right)
+    public int y;  // Board coordinate (bottom->top)
+
+    [HideInInspector] public int tileNum;
+    public Text TileNumText;
 
     void Update()
     {
-        // If we're adjacent to the empty spot, allow a move
+
+        // Only move if adjacent to the empty spot
         if (IsAdjacentToEmpty())
         {
-
-            // each of the ones (1) below for getting the empty spot really just represents a single tile as the tiles count as 1x1 as the board is just 5x5 (of 1x1) tiles, and it's 1x1 because the tile prefab has its size from me just creating the square, and we put it in 5 rows 5 times, hense each tile is 1x1 in respect to the board which is in total 5x5, the 1x1 doesn't actually represent the physical property size of the tile, idk what the heck it is
-
-            // If the empty spot is directly above us
-            if (Input.GetKeyDown(KeyCode.UpArrow) && boardManager.emptySpot.y == y + 1)
+            // We'll do else-if so only one direction can fire per frame
+            if (Input.GetKeyDown(KeyCode.UpArrow)
+                && y + 1 < boardManager.boardSize
+                && boardManager.emptySpot.x == x
+                && boardManager.emptySpot.y == y + 1)
+            {
                 SwapWithEmpty();
-            // If it's directly below
-            if (Input.GetKeyDown(KeyCode.DownArrow) && boardManager.emptySpot.y == y - 1)
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow)
+                     && y - 1 >= 0
+                     && boardManager.emptySpot.x == x
+                     && boardManager.emptySpot.y == y - 1)
+            {
                 SwapWithEmpty();
-            // If it's directly left
-            if (Input.GetKeyDown(KeyCode.LeftArrow) && boardManager.emptySpot.x == x - 1)
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftArrow)
+                     && x - 1 >= 0
+                     && boardManager.emptySpot.x == x - 1
+                     && boardManager.emptySpot.y == y)
+            {
                 SwapWithEmpty();
-            // If it's directly right
-            if (Input.GetKeyDown(KeyCode.RightArrow) && boardManager.emptySpot.x == x + 1)
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow)
+                     && x + 1 < boardManager.boardSize
+                     && boardManager.emptySpot.x == x + 1
+                     && boardManager.emptySpot.y == y)
+            {
                 SwapWithEmpty();
+            }
         }
     }
 
     bool IsAdjacentToEmpty()
     {
-        Vector2Int emptySpot = boardManager.emptySpot;
-        // Adjacent if difference in X is 1 (same Y) or difference in Y is 1 (same X)
-        bool adjacentX = (Mathf.Abs(emptySpot.x - x) == 1 && emptySpot.y == y);
-        bool adjacentY = (Mathf.Abs(emptySpot.y - y) == 1 && emptySpot.x == x);
-        return adjacentX || adjacentY;
+        Vector2Int e = boardManager.emptySpot;
+        // Adjacent if x differs by 1 (same y) OR y differs by 1 (same x)
+        bool adjacentX = (Mathf.Abs(e.x - x) == 1 && e.y == y);
+        bool adjacentY = (Mathf.Abs(e.y - y) == 1 && e.x == x);
+        return (adjacentX || adjacentY);
     }
 
     void SwapWithEmpty()
     {
-        // 1. Store the tile’s old position
+        // 1) Store the tile’s current coords
         int oldX = x;
         int oldY = y;
 
-        // 2. Grab the empty spot
-        Vector2Int e = boardManager.emptySpot;
-        int emptyX = e.x;
-        int emptyY = e.y;
+        // 2) Empty spot coords
+        int emptyX = boardManager.emptySpot.x;
+        int emptyY = boardManager.emptySpot.y;
 
-        // 3. The tile now goes to the empty spot
-        boardManager.board[emptyX, emptyY] = gameObject; 
+        Debug.Log($"[SWAP] Tile at ({oldX},{oldY}) moving into empty spot at ({emptyX},{emptyY}).");
+
+        // 3) Put this tile in the empty spot
+        boardManager.board[emptyX, emptyY] = gameObject;
         x = emptyX;
         y = emptyY;
 
-        // 4. The tile’s old position becomes the new empty spot
+        // 4) Old position becomes the new empty spot
         boardManager.board[oldX, oldY] = null;
         boardManager.emptySpot = new Vector2Int(oldX, oldY);
 
-        // 5. Visually update the tile’s transform
+        // 5) Move tile visually
         transform.position = new Vector3(x * boardManager.tileSize,
                                          y * boardManager.tileSize,
                                          0f);
+
+        // Log final results
+        Debug.Log($"[SWAP COMPLETE] Tile is now at ({x},{y}). Empty is now at ({boardManager.emptySpot.x},{boardManager.emptySpot.y}).");
+        boardManager.PrintBoardState();
     }
 }
