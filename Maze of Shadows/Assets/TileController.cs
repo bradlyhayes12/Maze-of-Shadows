@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;  // Needed for Coroutines
 
 public class TileController : MonoBehaviour
 {
@@ -10,8 +11,14 @@ public class TileController : MonoBehaviour
     [HideInInspector] public int tileNum;
     public Text TileNumText;
 
+    // Controls whether we can move and how often
+    private bool canMove = true;
+    public float moveCooldown = 0.05f; // Adjust in Inspector as needed
+
     void Update()
     {
+        // If we can't move yet, skip
+        if (!canMove) return;
 
         // Only move if adjacent to the empty spot
         if (IsAdjacentToEmpty())
@@ -22,28 +29,28 @@ public class TileController : MonoBehaviour
                 && boardManager.emptySpot.x == x
                 && boardManager.emptySpot.y == y + 1)
             {
-                SwapWithEmpty();
+                StartCoroutine(DoMove());
             }
             else if (Input.GetKeyDown(KeyCode.DownArrow)
                      && y - 1 >= 0
                      && boardManager.emptySpot.x == x
                      && boardManager.emptySpot.y == y - 1)
             {
-                SwapWithEmpty();
+                StartCoroutine(DoMove());
             }
             else if (Input.GetKeyDown(KeyCode.LeftArrow)
                      && x - 1 >= 0
                      && boardManager.emptySpot.x == x - 1
                      && boardManager.emptySpot.y == y)
             {
-                SwapWithEmpty();
+                StartCoroutine(DoMove());
             }
             else if (Input.GetKeyDown(KeyCode.RightArrow)
                      && x + 1 < boardManager.boardSize
                      && boardManager.emptySpot.x == x + 1
                      && boardManager.emptySpot.y == y)
             {
-                SwapWithEmpty();
+                StartCoroutine(DoMove());
             }
         }
     }
@@ -55,6 +62,21 @@ public class TileController : MonoBehaviour
         bool adjacentX = (Mathf.Abs(e.x - x) == 1 && e.y == y);
         bool adjacentY = (Mathf.Abs(e.y - y) == 1 && e.x == x);
         return (adjacentX || adjacentY);
+    }
+
+    private IEnumerator DoMove()
+    {
+        // Temporarily lock movement
+        canMove = false;
+
+        // Perform the tile swap
+        SwapWithEmpty();
+
+        // Brief pause to prevent rapid-fire swapping
+        yield return new WaitForSeconds(moveCooldown);
+
+        // Re-enable movement
+        canMove = true;
     }
 
     void SwapWithEmpty()
