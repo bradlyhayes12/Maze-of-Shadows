@@ -4,34 +4,33 @@ using TMPro;
 public class BoardManager : MonoBehaviour
 {
     public GameObject tilePrefab;
-    public int boardSize = 4;          // For a 15-puzzle (4x4)
-    public float tileSize = 1.0f;        // Spacing in world units
+    public int boardSize; // reference the board size from the view 
+    public float tileSize = 1.0f; // Spacing in world units
 
     [HideInInspector] public GameObject[,] board;
     [HideInInspector] public Vector2Int emptySpot; // Position of the empty cell
     public int moveCount = 0;
     private TextMeshProUGUI tileNum;
 
-    void Start()
-    {
-        InitializeBoard();
-    }
+    // Store board offset for reuse
+    private Vector3 boardOffset;
 
-    void InitializeBoard()
-    {
+    void Start() {InitializeBoard();}
+
+    void InitializeBoard() {
+        boardSize = FindObjectOfType<Init>().mapDimensions; // Get board dimensions from your view
         board = new GameObject[boardSize, boardSize];
         int totalTiles = boardSize * boardSize - 1;
         int number = 1;
 
-        // Create tiles and assign numbers from 1 to totalTiles.
-        // The last cell is left empty.
-        for (int y = 0; y < boardSize; y++)
-        {
-            for (int x = 0; x < boardSize; x++)
-            {
-                if (number <= totalTiles)
-                {
-                    Vector3 spawnPos = new Vector3(x * tileSize, y * tileSize, 0f);
+        // Calculate board offset so that the board's center is at (0,0)
+        boardOffset = new Vector3((boardSize - 1) * tileSize / 2, (boardSize - 1) * tileSize / 2, 0f);
+
+        for (int y = 0; y < boardSize; y++) {
+            for (int x = 0; x < boardSize; x++) {
+                if (number <= totalTiles) {
+                    // Adjust spawn position by subtracting boardOffset
+                    Vector3 spawnPos = new Vector3(x * tileSize, y * tileSize, 0f) - boardOffset;
                     GameObject tileObj = Instantiate(tilePrefab, spawnPos, Quaternion.identity, transform);
                     
                     // Configure the tile.
@@ -41,14 +40,15 @@ public class BoardManager : MonoBehaviour
                     tile.y = y;
                     tile.tileNumber = number;
                     tile.UpdateTileText();
-                    tileNum = FindObjectOfType<TextMeshProUGUI>();
-                    tileNum.SetText($"{number}");
                     
+                    // Set the tile number on a TextMeshProUGUI component.
+                    TextMeshProUGUI tileNum = FindObjectOfType<TextMeshProUGUI>();
+                    tileNum.SetText($"{number}");
+
                     board[x, y] = tileObj;
                     number++;
                 }
-                else
-                {
+                else {
                     // Set the empty spot.
                     board[x, y] = null;
                     emptySpot = new Vector2Int(x, y);
@@ -62,25 +62,21 @@ public class BoardManager : MonoBehaviour
     /// Checks if the tile at (tileX, tileY) is adjacent to the empty cell.
     /// If yes, moves the tile into the empty spot.
     /// </summary>
-    public bool TryMoveTile(int tileX, int tileY)
-    {
-        if (IsAdjacent(new Vector2Int(tileX, tileY), emptySpot))
-        {
+    public bool TryMoveTile(int tileX, int tileY) {
+        if (IsAdjacent(new Vector2Int(tileX, tileY), emptySpot)) {
             MoveTile(tileX, tileY);
             return true;
         }
         return false;
     }
 
-    bool IsAdjacent(Vector2Int a, Vector2Int b)
-    {
+    bool IsAdjacent(Vector2Int a, Vector2Int b) {
         int dx = Mathf.Abs(a.x - b.x);
         int dy = Mathf.Abs(a.y - b.y);
         return (dx + dy) == 1; // Only one cell apart
     }
 
-    void MoveTile(int tileX, int tileY)
-    {
+    void MoveTile(int tileX, int tileY) {
         GameObject tileObj = board[tileX, tileY];
         if (tileObj == null) return;
 
@@ -90,65 +86,28 @@ public class BoardManager : MonoBehaviour
 
         // Update the tile's internal coordinates and its visual position.
         TileController tile = tileObj.GetComponent<TileController>();
-        int oldX = tile.x, oldY = tile.y;
         tile.x = emptySpot.x;
         tile.y = emptySpot.y;
-        tileObj.transform.position = new Vector3(tile.x * tileSize, tile.y * tileSize, 0f);
+
+        // Apply the same board offset when moving the tile
+        tileObj.transform.position = new Vector3(tile.x * tileSize, tile.y * tileSize, 0f) - boardOffset;
 
         // Update the empty spot to be where the tile was.
         emptySpot = new Vector2Int(tileX, tileY);
         moveCount++;
         Debug.Log("Move Count: " + moveCount);
         PrintBoardState();
-
-        // Check for win condition.
-        if (CheckWin())
-        {
-            Debug.Log("Puzzle solved! Total moves: " + moveCount);
-            // Insert win handling code (UI, sound, etc.) here.
-        }
     }
 
-    bool CheckWin()
-    {
-        int number = 1;
-        for (int y = 0; y < boardSize; y++)
-        {
-            for (int x = 0; x < boardSize; x++)
-            {
-                // Skip the empty spot (bottom-right cell in a solved puzzle).
-                if (x == boardSize - 1 && y == boardSize - 1)
-                    continue;
-
-                GameObject tileObj = board[x, y];
-                if (tileObj == null)
-                    return false;
-
-                TileController tile = tileObj.GetComponent<TileController>();
-                if (tile.tileNumber != number)
-                    return false;
-                number++;
-            }
-        }
-        return true;
-    }
-
-    void PrintBoardState()
-    {
+    void PrintBoardState(){
         string state = "\nBoard State:\n";
-        for (int y = boardSize - 1; y >= 0; y--)
-        {
-            for (int x = 0; x < boardSize; x++)
-            {
-                if (board[x, y] != null)
-                {
+        for (int y = boardSize - 1; y >= 0; y--){
+            for (int x = 0; x < boardSize; x++){
+                if (board[x, y] != null){
                     TileController tile = board[x, y].GetComponent<TileController>();
                     state += tile.tileNumber.ToString("D2") + " ";
-                }
-                else
-                {
-                    state += "EE ";
-                }
+                } 
+                else state += "EE ";
             }
             state += "\n";
         }

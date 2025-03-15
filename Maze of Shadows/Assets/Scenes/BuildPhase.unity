@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 697470760312570539, guid: ce1dacaaf3f3f4442b842e7fb333774d, type: 3}
-  boardSize: 4
+  boardSize: 5
   tileSize: 1
   emptySpot: {x: 0, y: 0}
   moveCount: 0

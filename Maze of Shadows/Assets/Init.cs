@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Init : MonoBehaviour
 {
+    public int mapDimensions;
         // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         gameObject.GetComponent<ViewManagerScript>().LoadScene("BuildPhase");
     }
 }
