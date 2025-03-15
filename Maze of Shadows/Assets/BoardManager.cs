@@ -1,10 +1,12 @@
 using UnityEngine;
+using TMPro;
 
 public class BoardManager : MonoBehaviour
 {
     public GameObject tilePrefab;
     public int boardSize = 5;       // 5x5 puzzle
     public float tileSize = 1.0f;   // Each tile's spacing in world units
+    private TextMeshProUGUI tileNum;
 
     [HideInInspector] public GameObject[,] board;
     [HideInInspector] public Vector2Int emptySpot;   // (x,y) of the blank cell
@@ -24,12 +26,14 @@ public class BoardManager : MonoBehaviour
                     Vector3 spawnPos = new Vector3(x * tileSize, y * tileSize, 0f);
                     GameObject tileObj = Instantiate(tilePrefab, spawnPos, Quaternion.identity);
                     tileObj.transform.SetParent(transform);
+                    tileNum = FindObjectOfType<TextMeshProUGUI>();
 
                     TileController tc = tileObj.GetComponent<TileController>();
                     tc.boardManager = this;
                     tc.x = x;
                     tc.y = y;
-                    // tc.TileNumText.text = tc.tileNum.ToString();
+                    
+                    tileNum.SetText($"{createdTiles}");
 
                     board[x, y] = tileObj;
                     createdTiles++;
