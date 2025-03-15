@@ -4,164 +4,154 @@ using TMPro;
 public class BoardManager : MonoBehaviour
 {
     public GameObject tilePrefab;
-    public int boardSize = 5;       // 5x5 puzzle
-    public float tileSize = 1.0f;   // Each tile's spacing in world units
-    private TextMeshProUGUI tileNum;
+    public int boardSize = 4;          // For a 15-puzzle (4x4)
+    public float tileSize = 1.0f;        // Spacing in world units
 
     [HideInInspector] public GameObject[,] board;
-    [HideInInspector] public Vector2Int emptySpot;   // (x,y) of the blank cell
+    [HideInInspector] public Vector2Int emptySpot; // Position of the empty cell
+    public int moveCount = 0;
+    private TextMeshProUGUI tileNum;
 
     void Start()
     {
-        board = new GameObject[boardSize, boardSize];
-        int totalTiles = boardSize * boardSize - 1; // For a 5x5 puzzle, 24 tiles.
-        int createdTiles = 0;
+        InitializeBoard();
+    }
 
+    void InitializeBoard()
+    {
+        board = new GameObject[boardSize, boardSize];
+        int totalTiles = boardSize * boardSize - 1;
+        int number = 1;
+
+        // Create tiles and assign numbers from 1 to totalTiles.
+        // The last cell is left empty.
         for (int y = 0; y < boardSize; y++)
         {
             for (int x = 0; x < boardSize; x++)
             {
-                if (createdTiles < totalTiles)
+                if (number <= totalTiles)
                 {
                     Vector3 spawnPos = new Vector3(x * tileSize, y * tileSize, 0f);
-                    GameObject tileObj = Instantiate(tilePrefab, spawnPos, Quaternion.identity);
-                    tileObj.transform.SetParent(transform);
-                    tileNum = FindObjectOfType<TextMeshProUGUI>();
-
-                    TileController tc = tileObj.GetComponent<TileController>();
-                    tc.boardManager = this;
-                    tc.x = x;
-                    tc.y = y;
+                    GameObject tileObj = Instantiate(tilePrefab, spawnPos, Quaternion.identity, transform);
                     
-                    tileNum.SetText($"{createdTiles}");
-
+                    // Configure the tile.
+                    TileController tile = tileObj.GetComponent<TileController>();
+                    tile.boardManager = this;
+                    tile.x = x;
+                    tile.y = y;
+                    tile.tileNumber = number;
+                    tile.UpdateTileText();
+                    tileNum = FindObjectOfType<TextMeshProUGUI>();
+                    tileNum.SetText($"{number}");
+                    
                     board[x, y] = tileObj;
-                    createdTiles++;
+                    number++;
                 }
                 else
                 {
-                    // Last slot is empty.
+                    // Set the empty spot.
                     board[x, y] = null;
                     emptySpot = new Vector2Int(x, y);
                 }
             }
         }
-
-        Debug.Log("=== Board Initialized ===");
         PrintBoardState();
     }
 
     /// <summary>
-    /// Slides all tiles between the given tile position and the empty spot,
-    /// moving them one step toward the empty space.
+    /// Checks if the tile at (tileX, tileY) is adjacent to the empty cell.
+    /// If yes, moves the tile into the empty spot.
     /// </summary>
-    /// <param name="tilePos">The position of the tile that was activated.</param>
-    /// <param name="direction">The direction to slide (up, down, left, right).</param>
-    public void SlideTiles(Vector2Int tilePos, Vector2Int direction)
+    public bool TryMoveTile(int tileX, int tileY)
     {
-        // Horizontal movement
-        if (direction == Vector2Int.right || direction == Vector2Int.left)
+        if (IsAdjacent(new Vector2Int(tileX, tileY), emptySpot))
         {
-            // Ensure we're in the same row.
-            if (tilePos.y != emptySpot.y)
-                return;
-
-            // For right movement, the empty spot must be to the right of the tile.
-            if (direction == Vector2Int.right && emptySpot.x <= tilePos.x)
-                return;
-            // For left movement, the empty spot must be to the left of the tile.
-            if (direction == Vector2Int.left && emptySpot.x >= tilePos.x)
-                return;
-
-            // Slide horizontally.
-            if (direction == Vector2Int.right)
-            {
-                // Shift all tiles between tilePos.x and emptySpot.x one space to the left.
-                for (int col = emptySpot.x - 1; col >= tilePos.x; col--)
-                {
-                    board[col + 1, tilePos.y] = board[col, tilePos.y];
-                    // Update tile's internal coordinate and visual position.
-                    TileController tc = board[col + 1, tilePos.y].GetComponent<TileController>();
-                    tc.x = col + 1;
-                    board[col + 1, tilePos.y].transform.position = new Vector3((col + 1) * tileSize, tilePos.y * tileSize, 0f);
-                }
-            }
-            else if (direction == Vector2Int.left)
-            {
-                // Shift all tiles between emptySpot.x and tilePos.x one space to the right.
-                for (int col = emptySpot.x + 1; col <= tilePos.x; col++)
-                {
-                    board[col - 1, tilePos.y] = board[col, tilePos.y];
-                    TileController tc = board[col - 1, tilePos.y].GetComponent<TileController>();
-                    tc.x = col - 1;
-                    board[col - 1, tilePos.y].transform.position = new Vector3((col - 1) * tileSize, tilePos.y * tileSize, 0f);
-                }
-            }
-            // The original position of the activated tile now becomes empty.
-            board[tilePos.x, tilePos.y] = null;
-            emptySpot = tilePos;
+            MoveTile(tileX, tileY);
+            return true;
         }
-        // Vertical movement
-        else if (direction == Vector2Int.up || direction == Vector2Int.down)
-        {
-            // Ensure we're in the same column.
-            if (tilePos.x != emptySpot.x)
-                return;
-
-            // For up movement, the empty spot must be above the tile.
-            if (direction == Vector2Int.up && emptySpot.y <= tilePos.y)
-                return;
-            // For down movement, the empty spot must be below the tile.
-            if (direction == Vector2Int.down && emptySpot.y >= tilePos.y)
-                return;
-
-            // Slide vertically.
-            if (direction == Vector2Int.up)
-            {
-                // Shift all tiles between tilePos.y and emptySpot.y one space down.
-                for (int row = emptySpot.y - 1; row >= tilePos.y; row--)
-                {
-                    board[tilePos.x, row + 1] = board[tilePos.x, row];
-                    TileController tc = board[tilePos.x, row + 1].GetComponent<TileController>();
-                    tc.y = row + 1;
-                    board[tilePos.x, row + 1].transform.position = new Vector3(tilePos.x * tileSize, (row + 1) * tileSize, 0f);
-                }
-            }
-            else if (direction == Vector2Int.down)
-            {
-                // Shift all tiles between emptySpot.y and tilePos.y one space up.
-                for (int row = emptySpot.y + 1; row <= tilePos.y; row++)
-                {
-                    board[tilePos.x, row - 1] = board[tilePos.x, row];
-                    TileController tc = board[tilePos.x, row - 1].GetComponent<TileController>();
-                    tc.y = row - 1;
-                    board[tilePos.x, row - 1].transform.position = new Vector3(tilePos.x * tileSize, (row - 1) * tileSize, 0f);
-                }
-            }
-            board[tilePos.x, tilePos.y] = null;
-            emptySpot = tilePos;
-        }
-
-        Debug.Log($"[SLIDE COMPLETE] Empty spot is now at ({emptySpot.x},{emptySpot.y}).");
-        PrintBoardState();
+        return false;
     }
 
-    /// <summary>
-    /// Prints the board state to the Console for debugging.
-    /// </summary>
-    public void PrintBoardState()
+    bool IsAdjacent(Vector2Int a, Vector2Int b)
     {
-        string boardLog = "\n\nCurrent Board State (y=0 at bottom):\n";
-        for (int row = boardSize - 1; row >= 0; row--)
+        int dx = Mathf.Abs(a.x - b.x);
+        int dy = Mathf.Abs(a.y - b.y);
+        return (dx + dy) == 1; // Only one cell apart
+    }
+
+    void MoveTile(int tileX, int tileY)
+    {
+        GameObject tileObj = board[tileX, tileY];
+        if (tileObj == null) return;
+
+        // Swap the tile with the empty spot.
+        board[emptySpot.x, emptySpot.y] = tileObj;
+        board[tileX, tileY] = null;
+
+        // Update the tile's internal coordinates and its visual position.
+        TileController tile = tileObj.GetComponent<TileController>();
+        int oldX = tile.x, oldY = tile.y;
+        tile.x = emptySpot.x;
+        tile.y = emptySpot.y;
+        tileObj.transform.position = new Vector3(tile.x * tileSize, tile.y * tileSize, 0f);
+
+        // Update the empty spot to be where the tile was.
+        emptySpot = new Vector2Int(tileX, tileY);
+        moveCount++;
+        Debug.Log("Move Count: " + moveCount);
+        PrintBoardState();
+
+        // Check for win condition.
+        if (CheckWin())
         {
-            boardLog += "Row " + row + ": ";
-            for (int col = 0; col < boardSize; col++)
-            {
-                boardLog += board[col, row] == null ? "[ EMPTY ] " : $"[ T({col},{row}) ] ";
-            }
-            boardLog += "\n";
+            Debug.Log("Puzzle solved! Total moves: " + moveCount);
+            // Insert win handling code (UI, sound, etc.) here.
         }
-        boardLog += $"EmptySpot: ({emptySpot.x},{emptySpot.y})";
-        Debug.Log(boardLog);
+    }
+
+    bool CheckWin()
+    {
+        int number = 1;
+        for (int y = 0; y < boardSize; y++)
+        {
+            for (int x = 0; x < boardSize; x++)
+            {
+                // Skip the empty spot (bottom-right cell in a solved puzzle).
+                if (x == boardSize - 1 && y == boardSize - 1)
+                    continue;
+
+                GameObject tileObj = board[x, y];
+                if (tileObj == null)
+                    return false;
+
+                TileController tile = tileObj.GetComponent<TileController>();
+                if (tile.tileNumber != number)
+                    return false;
+                number++;
+            }
+        }
+        return true;
+    }
+
+    void PrintBoardState()
+    {
+        string state = "\nBoard State:\n";
+        for (int y = boardSize - 1; y >= 0; y--)
+        {
+            for (int x = 0; x < boardSize; x++)
+            {
+                if (board[x, y] != null)
+                {
+                    TileController tile = board[x, y].GetComponent<TileController>();
+                    state += tile.tileNumber.ToString("D2") + " ";
+                }
+                else
+                {
+                    state += "EE ";
+                }
+            }
+            state += "\n";
+        }
+        Debug.Log(state);
     }
 }
