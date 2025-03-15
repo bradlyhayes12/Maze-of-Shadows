@@ -14,7 +14,7 @@ public class BoardManager : MonoBehaviour
     void Start()
     {
         board = new GameObject[boardSize, boardSize];
-        int totalTiles = boardSize * boardSize - 1; // 24 in a 5x5
+        int totalTiles = boardSize * boardSize - 1; // For a 5x5 puzzle, 24 tiles.
         int createdTiles = 0;
 
         for (int y = 0; y < boardSize; y++)
@@ -40,7 +40,7 @@ public class BoardManager : MonoBehaviour
                 }
                 else
                 {
-                    // The last slot is empty
+                    // Last slot is empty.
                     board[x, y] = null;
                     emptySpot = new Vector2Int(x, y);
                 }
@@ -52,30 +52,116 @@ public class BoardManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Prints the entire board state to the Console, row by row.
+    /// Slides all tiles between the given tile position and the empty spot,
+    /// moving them one step toward the empty space.
+    /// </summary>
+    /// <param name="tilePos">The position of the tile that was activated.</param>
+    /// <param name="direction">The direction to slide (up, down, left, right).</param>
+    public void SlideTiles(Vector2Int tilePos, Vector2Int direction)
+    {
+        // Horizontal movement
+        if (direction == Vector2Int.right || direction == Vector2Int.left)
+        {
+            // Ensure we're in the same row.
+            if (tilePos.y != emptySpot.y)
+                return;
+
+            // For right movement, the empty spot must be to the right of the tile.
+            if (direction == Vector2Int.right && emptySpot.x <= tilePos.x)
+                return;
+            // For left movement, the empty spot must be to the left of the tile.
+            if (direction == Vector2Int.left && emptySpot.x >= tilePos.x)
+                return;
+
+            // Slide horizontally.
+            if (direction == Vector2Int.right)
+            {
+                // Shift all tiles between tilePos.x and emptySpot.x one space to the left.
+                for (int col = emptySpot.x - 1; col >= tilePos.x; col--)
+                {
+                    board[col + 1, tilePos.y] = board[col, tilePos.y];
+                    // Update tile's internal coordinate and visual position.
+                    TileController tc = board[col + 1, tilePos.y].GetComponent<TileController>();
+                    tc.x = col + 1;
+                    board[col + 1, tilePos.y].transform.position = new Vector3((col + 1) * tileSize, tilePos.y * tileSize, 0f);
+                }
+            }
+            else if (direction == Vector2Int.left)
+            {
+                // Shift all tiles between emptySpot.x and tilePos.x one space to the right.
+                for (int col = emptySpot.x + 1; col <= tilePos.x; col++)
+                {
+                    board[col - 1, tilePos.y] = board[col, tilePos.y];
+                    TileController tc = board[col - 1, tilePos.y].GetComponent<TileController>();
+                    tc.x = col - 1;
+                    board[col - 1, tilePos.y].transform.position = new Vector3((col - 1) * tileSize, tilePos.y * tileSize, 0f);
+                }
+            }
+            // The original position of the activated tile now becomes empty.
+            board[tilePos.x, tilePos.y] = null;
+            emptySpot = tilePos;
+        }
+        // Vertical movement
+        else if (direction == Vector2Int.up || direction == Vector2Int.down)
+        {
+            // Ensure we're in the same column.
+            if (tilePos.x != emptySpot.x)
+                return;
+
+            // For up movement, the empty spot must be above the tile.
+            if (direction == Vector2Int.up && emptySpot.y <= tilePos.y)
+                return;
+            // For down movement, the empty spot must be below the tile.
+            if (direction == Vector2Int.down && emptySpot.y >= tilePos.y)
+                return;
+
+            // Slide vertically.
+            if (direction == Vector2Int.up)
+            {
+                // Shift all tiles between tilePos.y and emptySpot.y one space down.
+                for (int row = emptySpot.y - 1; row >= tilePos.y; row--)
+                {
+                    board[tilePos.x, row + 1] = board[tilePos.x, row];
+                    TileController tc = board[tilePos.x, row + 1].GetComponent<TileController>();
+                    tc.y = row + 1;
+                    board[tilePos.x, row + 1].transform.position = new Vector3(tilePos.x * tileSize, (row + 1) * tileSize, 0f);
+                }
+            }
+            else if (direction == Vector2Int.down)
+            {
+                // Shift all tiles between emptySpot.y and tilePos.y one space up.
+                for (int row = emptySpot.y + 1; row <= tilePos.y; row++)
+                {
+                    board[tilePos.x, row - 1] = board[tilePos.x, row];
+                    TileController tc = board[tilePos.x, row - 1].GetComponent<TileController>();
+                    tc.y = row - 1;
+                    board[tilePos.x, row - 1].transform.position = new Vector3(tilePos.x * tileSize, (row - 1) * tileSize, 0f);
+                }
+            }
+            board[tilePos.x, tilePos.y] = null;
+            emptySpot = tilePos;
+        }
+
+        Debug.Log($"[SLIDE COMPLETE] Empty spot is now at ({emptySpot.x},{emptySpot.y}).");
+        PrintBoardState();
+    }
+
+    /// <summary>
+    /// Prints the board state to the Console for debugging.
     /// </summary>
     public void PrintBoardState()
     {
         string boardLog = "\n\nCurrent Board State (y=0 at bottom):\n";
-        // We'll print from the top row down (boardSize - 1) to 0
         for (int row = boardSize - 1; row >= 0; row--)
         {
             boardLog += "Row " + row + ": ";
             for (int col = 0; col < boardSize; col++)
             {
-                if (board[col, row] == null)
-                {
-                    boardLog += "[ EMPTY ] ";
-                }
-                else
-                {
-                    // If you want to show tile name or coords, you could do:
-                    boardLog += "[ T(" + col + "," + row + ") ] ";
-                }
+                boardLog += board[col, row] == null ? "[ EMPTY ] " : $"[ T({col},{row}) ] ";
             }
             boardLog += "\n";
         }
-        boardLog += "EmptySpot: (" + emptySpot.x + "," + emptySpot.y + ")";
+        boardLog += $"EmptySpot: ({emptySpot.x},{emptySpot.y})";
         Debug.Log(boardLog);
     }
 }
