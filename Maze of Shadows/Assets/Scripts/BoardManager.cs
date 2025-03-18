@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-
 public class BoardManager : MonoBehaviour
 {
     public GameObject tilePrefab;
