@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class ViewManagerScript : MonoBehaviour
 {
      public void LoadScene(string sceneName) {
-        // Debug.Log("Loading scene: " + sceneName);
+        Debug.Log("Loading scene: " + sceneName);
         SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
     }
 
