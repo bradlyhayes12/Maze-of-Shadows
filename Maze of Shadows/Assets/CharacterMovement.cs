@@ -49,6 +49,14 @@ public class CharacterMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.velocity = movement.normalized * moveSpeed; 
+         rb.MovePosition(rb.position + movement.normalized * moveSpeed * Time.fixedDeltaTime);
     }
+
+    void OnCollisionEnter2D(Collision2D collision)
+{
+    if (collision.gameObject.CompareTag("Wall")) // Make sure walls have the "Wall" tag
+    {
+        movement = Vector2.zero; // Stop movement when hitting a wall
+    }
+}
 }
