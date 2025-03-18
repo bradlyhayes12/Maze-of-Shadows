@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-
 public class BoardManager : MonoBehaviour
 {
     public GameObject tilePrefab;
@@ -15,7 +14,7 @@ public class BoardManager : MonoBehaviour
     // Store board offset for reuse
     private Vector3 boardOffset;
 
-    void Start() {InitializeBoard();}
+    public void Start() {InitializeBoard();}
 
     void InitializeBoard() {
         boardSize = FindObjectOfType<Init>().mapDimensions; // Get board dimensions from your view
@@ -113,4 +112,8 @@ public class BoardManager : MonoBehaviour
         }
         Debug.Log(state);
     }
+
+    // unit testing function
+    public bool AreCellsAdjacent(Vector2Int a, Vector2Int b){return IsAdjacent(a, b);}
+
 }
