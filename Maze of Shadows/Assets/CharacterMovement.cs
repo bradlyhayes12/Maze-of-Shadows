@@ -8,28 +8,43 @@ public class CharacterMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private Vector2 movement;
+    private SpriteRenderer spriteRenderer;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Get Input
+         // Get movement input
         movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical"); 
+        movement.y = Input.GetAxisRaw("Vertical");
 
-        // check if player is moivng
-        if(movement.magnitude > 0){
-            animator.SetBool("isMoving", true);
+        // Check if character is moving
+        bool isMoving = movement.magnitude > 0;
+        animator.SetBool("isMoving", isMoving);
+
+        // Flip the character when moving left or right
+        if (movement.x > 0)
+        {
+            spriteRenderer.flipX = true; // Face right
         }
-        else{
-            animator.SetBool("isMoving", false);
+        else if (movement.x < 0)
+        {
+            spriteRenderer.flipX = false; // Face left
         }
+
+        //   If we want rotation we use this
+        // if (movement != Vector2.zero)
+        // {
+        //     float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg;
+        //     transform.rotation = Quaternion.Euler(0, 0, angle - 90); // Adjust based on sprite orientation
+        // }
     }
 
     void FixedUpdate()
