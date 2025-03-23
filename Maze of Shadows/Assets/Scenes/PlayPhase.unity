@@ -132,7 +132,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1133740980}
   - component: {fileID: 1133740979}
-  - component: {fileID: 1133740978}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -140,14 +139,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1133740978
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1133740977}
-  m_Enabled: 1
 --- !u!20 &1133740979
 Camera:
   m_ObjectHideFlags: 0
@@ -243,7 +234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d50eaa009403a2f41833ceb5de5c326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomTilePrefab: {fileID: 697470760312570539, guid: 562bfbf3193c5864a8d88d619674402d, type: 3}
+  RoomTile: {fileID: 697470760312570539, guid: 562bfbf3193c5864a8d88d619674402d, type: 3}
   roomTileSize: 1
 --- !u!4 &1551925927
 Transform:
