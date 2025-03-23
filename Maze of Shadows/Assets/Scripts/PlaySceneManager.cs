@@ -4,7 +4,7 @@ public class PlaySceneManager : MonoBehaviour
 {
     [Header("Room Tile Setup")]
     [SerializeField] private GameObject roomTilePrefab;   // Assign in Inspector
-    [SerializeField] private float roomTileSize = 10f;    // Larger spacing for rooms
+    [SerializeField] private float roomTileSize = 1f;    // Larger spacing for rooms
 
     private BoardManager boardManager;
 
@@ -23,11 +23,16 @@ public class PlaySceneManager : MonoBehaviour
         SpawnRoomTiles();
     }
 
-    private void SpawnRoomTiles()
-    {
-        // The original board is stored in boardManager.board
+    private void SpawnRoomTiles(){
         GameObject[,] originalBoard = boardManager.board;
         int boardSize = boardManager.boardSize;
+
+        // Calculate an offset so the "big board" is also centered at (0,0).
+        Vector3 bigBoardOffset = new Vector3(
+            (boardSize - 1) * roomTileSize / 2,
+            (boardSize - 1) * roomTileSize / 2,
+            0f
+        );
 
         for (int y = 0; y < boardSize; y++)
         {
@@ -36,29 +41,13 @@ public class PlaySceneManager : MonoBehaviour
                 GameObject tileObj = originalBoard[x, y];
                 if (tileObj != null)
                 {
-                    // We have a tile; get its TileController
-                    TileController tileController = tileObj.GetComponent<TileController>();
-
-                    // Instantiate a big "RoomTile" in the PlayScene
-                    Vector3 spawnPos = new Vector3(
-                        x * roomTileSize, 
-                        y * roomTileSize, 
-                        0f
-                    );
-
+                    // (x,y) -> spawn big tile, subtract offset
+                    Vector3 spawnPos = new Vector3(x * roomTileSize, y * roomTileSize, 0f) - bigBoardOffset;
+                    
                     GameObject roomTile = Instantiate(roomTilePrefab, spawnPos, Quaternion.identity);
-
-                    // Get our custom script
-                    // RoomTile roomScript = roomTile.GetComponent<RoomTile>();
-                    // if (roomScript != null)
-                    // {
-                    //     // Pass along the tile number to keep track
-                    //     roomScript.originalTileNumber = tileController.tileNumber;
-                    //     // You can also pass any "type" or "look" data if needed
-                    //     roomScript.InitializeRoomLook();
-                    // }
                 }
             }
         }
     }
+
 }

@@ -120,14 +120,37 @@ public class BoardManager : MonoBehaviour
     // unit testing function
     public bool AreCellsAdjacent(Vector2Int a, Vector2Int b){return IsAdjacent(a, b);}
 
-    public void OnPlayButtonClicked()
-    {
-        // Make this BoardManager survive scene load
+    public void OnPlayButtonClicked(){
         DontDestroyOnLoad(gameObject);
-        // Then load the PlayScene
+        HideVisualsAndDisableInteraction();
         viewManagerScript = FindAnyObjectByType<ViewManagerScript>();
-        viewManagerScript.LoadScene("PlayPhase");
-        viewManagerScript.UnloadScene("BuildPhase");
+        if (viewManagerScript != null)
+        {
+            viewManagerScript.LoadScene("PlayPhase");
+            viewManagerScript.UnloadScene("BuildPhase");
+        }
+        else
+            Debug.LogError("ViewManagerScript not found.");
     }
+
+
+    private void HideVisualsAndDisableInteraction(){
+        // Disable the board manager object’s renderer (if any)
+        Renderer mainRenderer = GetComponent<Renderer>();
+        if (mainRenderer != null) mainRenderer.enabled = false;
+
+        // Disable all child renderers (i.e., tile visuals)
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+            renderer.enabled = false;
+
+        // Disable all colliders to prevent interactions
+        foreach (Collider collider in GetComponentsInChildren<Collider>())
+            collider.enabled = false;
+
+        // Optionally disable any UI components
+        foreach (Canvas canvas in GetComponentsInChildren<Canvas>())
+            canvas.enabled = false;
+}
+
 
 }
