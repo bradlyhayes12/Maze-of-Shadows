@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using Codice.Client.BaseCommands.WkStatus.Printers;
 public class BoardManager : MonoBehaviour
 {
     public GameObject tilePrefab;
@@ -11,10 +12,11 @@ public class BoardManager : MonoBehaviour
     public int moveCount = 0;
     private TextMeshProUGUI tileNum;
 
-    private Init init;
-
     // Store board offset for reuse
     private Vector3 boardOffset;
+    private ViewManagerScript viewManagerScript;
+    private Init init;
+
 
     public void Start() {InitializeBoard();}
 
@@ -117,5 +119,15 @@ public class BoardManager : MonoBehaviour
 
     // unit testing function
     public bool AreCellsAdjacent(Vector2Int a, Vector2Int b){return IsAdjacent(a, b);}
+
+    public void OnPlayButtonClicked()
+    {
+        // Make this BoardManager survive scene load
+        DontDestroyOnLoad(gameObject);
+        // Then load the PlayScene
+        viewManagerScript = FindAnyObjectByType<ViewManagerScript>();
+        viewManagerScript.LoadScene("PlayPhase");
+        viewManagerScript.UnloadScene("BuildPhase");
+    }
 
 }
