@@ -11,6 +11,8 @@ public class BoardManager : MonoBehaviour
     public int moveCount = 0;
     private TextMeshProUGUI tileNum;
 
+    private Init init;
+
     // Store board offset for reuse
     private Vector3 boardOffset;
 
