@@ -2,7 +2,7 @@ using NUnit.Framework; // for [test] and nunit assertions
 using UnityEngine;
 
 // no using unityengine.testtools or using system.collections because we're not doing play mode tests
-
+[TestFixture]
 public class BoardManagerTests
 {
     // verifies that two horizontally adjacent cells are recognized as adjacent
