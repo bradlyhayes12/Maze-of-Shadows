@@ -234,8 +234,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d50eaa009403a2f41833ceb5de5c326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RoomTile: {fileID: 697470760312570539, guid: 562bfbf3193c5864a8d88d619674402d, type: 3}
-  roomTileSize: 1
+  RoomTile: {fileID: 7888131393970377452, guid: e26e8474220e8b34183a7e09eaefc880, type: 3}
+  roomTileSize: 16
 --- !u!4 &1551925927
 Transform:
   m_ObjectHideFlags: 0
