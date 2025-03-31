@@ -31,11 +31,11 @@ public class CharacterMovement : MonoBehaviour
             // Flip the character when moving left or right
             if (movement.x > 0)
             {
-                spriteRenderer.flipX = true; // Face right
+                spriteRenderer.flipX = false; // Face right
             }
             else if (movement.x < 0)
             {
-                spriteRenderer.flipX = false; // Face left
+                spriteRenderer.flipX = true; // Face left
             }
     }
 
