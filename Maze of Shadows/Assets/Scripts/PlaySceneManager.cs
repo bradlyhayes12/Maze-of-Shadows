@@ -11,7 +11,7 @@ public class PlaySceneManager : MonoBehaviour
     // 1) Hardcode the known size of each room
     [SerializeField] private float roomWidth  = 17.77157f;
     [SerializeField] private float roomHeight = 9.66798f;
-    [SerializeField] private float extraGap   = 0f; // If you want a small gap, set this > 0
+    [SerializeField] private float extraGap   = 0f; 
 
     private BoardManager boardManager;
 
@@ -76,7 +76,6 @@ public class PlaySceneManager : MonoBehaviour
                 }
                 else
                 {
-                    // This is the empty spot — spawn the PlayerSpawnRoom here!
                     Instantiate(PlayerSpawnRoom, spawnPos, Quaternion.identity);
                 }
             }
