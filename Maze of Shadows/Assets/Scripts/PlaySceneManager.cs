@@ -2,64 +2,84 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlaySceneManager : MonoBehaviour {
+public class PlaySceneManager : MonoBehaviour
+{
     [Header("Room Tile Setup")]
-    [SerializeField] private GameObject RoomTile;   // Assign in Inspector.
-    [SerializeField] private float roomTileSize = 1f;   // Spacing for room tiles.
+    [SerializeField] private GameObject RoomTile; // Assign in Inspector
+    [SerializeField] private GameObject PlayerSpawnRoom;
+
+    // 1) Hardcode the known size of each room
+    [SerializeField] private float roomWidth  = 17.77157f;
+    [SerializeField] private float roomHeight = 9.66798f;
+    [SerializeField] private float extraGap   = 0f; 
 
     private BoardManager boardManager;
 
-    void Start(){
-        // Find the BoardManager that survived DontDestroyOnLoad.
+    void Start()
+    {
+        // 2) Find BoardManager
         boardManager = FindObjectOfType<BoardManager>();
-        if (boardManager == null){
-            Debug.LogError("No BoardManager found in PlayScene. Did you forget to load from BuildScene?");
+        if (boardManager == null)
+        {
+            Debug.LogError("No BoardManager found in PlayScene!");
             return;
         }
-        // Wait until PlayPhase is active before spawning RoomTiles.
+
+        // 3) (Skip tilemap measuring code — we have the numbers!)
+        // Start the coroutine to wait for PlayPhase to be active
         StartCoroutine(WaitForActiveSceneAndSpawn());
     }
 
-    private IEnumerator WaitForActiveSceneAndSpawn() {
-        // Continuously check if the active scene is "PlayPhase".
+    private IEnumerator WaitForActiveSceneAndSpawn()
+    {
         while (SceneManager.GetActiveScene().name != "PlayPhase")
         {
-            Debug.Log("Waiting for PlayPhase to become active. Current active scene: " + SceneManager.GetActiveScene().name);
+            Debug.Log("Waiting for PlayPhase to become active. " +
+                      "Current active scene: " + SceneManager.GetActiveScene().name);
             yield return null;
         }
+
         Debug.Log("PlayPhase is active! Spawning RoomTiles.");
         SpawnRoomTiles();
     }
 
-    private void SpawnRoomTiles(){
+    private void SpawnRoomTiles()
+    {
         GameObject[,] originalBoard = boardManager.board;
         int boardSize = boardManager.boardSize;
 
-        // Calculate offset so the room tiles are centered.
         Vector3 bigBoardOffset = new Vector3(
-            (boardSize - 1) * roomTileSize / 2,
-            (boardSize - 1) * roomTileSize / 2,
+            (boardSize - 1) * roomWidth / 2f,
+            (boardSize - 1) * roomHeight / 2f,
             0f
         );
 
-        for (int y = 0; y < boardSize; y++) {
-            for (int x = 0; x < boardSize; x++) {
-                GameObject tileObj = originalBoard[x, y];
-                if (tileObj != null) {
-                    // Calculate spawn position.
-                    Vector3 spawnPos = new Vector3(x * roomTileSize, y * roomTileSize, 0f) - bigBoardOffset;
-                    Debug.Log("Instantiating RoomTile at: " + spawnPos + " in scene: " + SceneManager.GetActiveScene().name);
-                    
-                    // Instantiate the room tile.
-                    GameObject roomTile = Instantiate(RoomTile, spawnPos, Quaternion.identity);
+        for (int y = 0; y < boardSize; y++)
+        {
+            for (int x = 0; x < boardSize; x++)
+            {
+                Vector3 spawnPos = new Vector3(
+                    x * (roomWidth + extraGap),
+                    y * (roomHeight + extraGap),
+                    0f
+                ) - bigBoardOffset;
 
-                    // Transfer data from the original tile.
+                GameObject tileObj = originalBoard[x, y];
+
+                if (tileObj != null)
+                {
+                    GameObject roomTile = Instantiate(RoomTile, spawnPos, Quaternion.identity);
+                    
                     TileController tileController = tileObj.GetComponent<TileController>();
                     RoomTileScript roomScript = roomTile.GetComponent<RoomTileScript>();
                     roomScript.originalTileNumber = tileController.tileNumber;
-                    roomScript.InitializeRoomLook();
+                }
+                else
+                {
+                    Instantiate(PlayerSpawnRoom, spawnPos, Quaternion.identity);
                 }
             }
         }
     }
+
 }
