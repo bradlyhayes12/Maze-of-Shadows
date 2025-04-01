@@ -2387,6 +2387,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originalTileNumber: 0
   roomNumberText: {fileID: 7263012466772506962}
+  whiteBG: {fileID: 4640970886958856704}
+  canvas: {fileID: 3538088193298338582}
 --- !u!1 &8910694544534109157
 GameObject:
   m_ObjectHideFlags: 0

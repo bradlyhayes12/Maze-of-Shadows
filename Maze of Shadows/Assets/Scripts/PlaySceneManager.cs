@@ -75,7 +75,7 @@ public class PlaySceneManager : MonoBehaviour
                     TileController tileController = tileObj.GetComponent<TileController>();
                     RoomTileScript roomScript = roomTile.GetComponent<RoomTileScript>();
                     roomScript.originalTileNumber = tileController.tileNumber;
-                    roomScript.InitializeRoomLook();
+                    // roomScript.InitializeRoomLook();
                 }
             }
         }
