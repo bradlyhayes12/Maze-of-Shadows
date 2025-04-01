@@ -6,6 +6,7 @@ public class PlaySceneManager : MonoBehaviour
 {
     [Header("Room Tile Setup")]
     [SerializeField] private GameObject RoomTile; // Assign in Inspector
+    [SerializeField] private GameObject PlayerSpawnRoom;
 
     // 1) Hardcode the known size of each room
     [SerializeField] private float roomWidth  = 17.77157f;
@@ -44,40 +45,42 @@ public class PlaySceneManager : MonoBehaviour
 
     private void SpawnRoomTiles()
     {
-        // 4) Grab the board from BoardManager
         GameObject[,] originalBoard = boardManager.board;
         int boardSize = boardManager.boardSize;
 
-        // 5) Calculate offset to center the board
         Vector3 bigBoardOffset = new Vector3(
-            (boardSize - 1) * roomWidth  / 2f,
+            (boardSize - 1) * roomWidth / 2f,
             (boardSize - 1) * roomHeight / 2f,
             0f
         );
 
-        // 6) Loop and spawn each room
         for (int y = 0; y < boardSize; y++)
         {
             for (int x = 0; x < boardSize; x++)
             {
+                Vector3 spawnPos = new Vector3(
+                    x * (roomWidth + extraGap),
+                    y * (roomHeight + extraGap),
+                    0f
+                ) - bigBoardOffset;
+
                 GameObject tileObj = originalBoard[x, y];
+
                 if (tileObj != null)
                 {
-                    // Position for each room
-                    float px = x * (roomWidth  + extraGap);
-                    float py = y * (roomHeight + extraGap);
-                    Vector3 spawnPos = new Vector3(px, py, 0f) - bigBoardOffset;
-
-                    // Instantiate the room
                     GameObject roomTile = Instantiate(RoomTile, spawnPos, Quaternion.identity);
-
-                    // Transfer data
+                    
                     TileController tileController = tileObj.GetComponent<TileController>();
                     RoomTileScript roomScript = roomTile.GetComponent<RoomTileScript>();
                     roomScript.originalTileNumber = tileController.tileNumber;
-                    // roomScript.InitializeRoomLook();
+                }
+                else
+                {
+                    // This is the empty spot — spawn the PlayerSpawnRoom here!
+                    Instantiate(PlayerSpawnRoom, spawnPos, Quaternion.identity);
                 }
             }
         }
     }
+
 }
