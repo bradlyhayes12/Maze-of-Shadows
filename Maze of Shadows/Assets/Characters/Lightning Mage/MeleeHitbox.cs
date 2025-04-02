@@ -4,26 +4,34 @@ using UnityEngine;
 
 public class MeleeHitbox : MonoBehaviour
 {
-    private bool canHit = false;
+
+    private Collider2D hitbox;
+
+    void Start()
+    {
+        hitbox = GetComponent<Collider2D>();
+        hitbox.enabled = false; // Disable it at the start
+    }
 
     public void EnableHitbox()
     {
-        canHit = true;
+        Debug.Log("Hitbox ENABLED");
+        hitbox.enabled = true;
     }
 
     public void DisableHitbox()
     {
-        canHit = false;
+        Debug.Log("Hitbox DISABLED");
+        hitbox.enabled = false;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!canHit) return;
 
         if (other.CompareTag("Wall"))
         {
-            Debug.Log("Hit enemy: " + other.name);
-            // TODO: Damage enemy script here
+            Debug.Log("Hit wall: " + other.name);
         }
+
     }
 }
