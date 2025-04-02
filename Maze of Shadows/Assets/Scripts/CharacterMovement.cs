@@ -38,21 +38,6 @@ public class CharacterMovement : MonoBehaviour
             spriteRenderer.flipX = true; // Face left
         }
 
-        if (Input.GetKeyDown(KeyCode.Q) && !isFiring)
-        {
-            StartCoroutine(FireballRoutine());
-        }
-    }
-
-    private IEnumerator FireballRoutine()
-    {
-        isFiring = true;
-        animator.SetTrigger("Fireball");
-
-        yield return new WaitForSeconds(1f);
-
-        animator.ResetTrigger("Fireball");
-        isFiring = false;
     }
 
         void FixedUpdate()
