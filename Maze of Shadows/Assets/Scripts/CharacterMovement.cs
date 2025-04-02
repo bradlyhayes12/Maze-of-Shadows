@@ -9,7 +9,6 @@ public class CharacterMovement : MonoBehaviour
     private Animator animator;
     private Vector2 movement;
     private SpriteRenderer spriteRenderer;
-    private bool isFiring = false;
    
 
     void Start()
@@ -24,6 +23,7 @@ public class CharacterMovement : MonoBehaviour
 
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
+
 
         bool isMoving = Mathf.Abs(movement.x) > 0 || Mathf.Abs(movement.y) > 0;
         animator.SetBool("isMoving", isMoving);

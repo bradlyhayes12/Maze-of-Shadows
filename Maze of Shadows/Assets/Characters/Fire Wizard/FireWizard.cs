@@ -13,6 +13,10 @@ public class FireWizard : MonoBehaviour
 
     private bool canFire = true;
 
+    public float attackDuration = 1f; // Length of the melee animation
+    public float attackCoolDown = 2f;
+    private bool isAttacking = false;
+
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -26,6 +30,36 @@ public class FireWizard : MonoBehaviour
         {
             StartCoroutine(FireballBurstRoutine());
         }
+
+        if (Input.GetKeyDown(KeyCode.E) && !isAttacking)
+        {
+            StartCoroutine(MeleeAttack());
+        }
+    }
+
+    private IEnumerator MeleeAttack()
+    {
+        isAttacking = true;
+
+        //Stop movement while swinging
+        if (movementScript != null)
+            movementScript.enabled = false;
+
+        if (animator != null)
+            animator.SetBool("isMoving", false);
+
+        animator.SetTrigger("Melee");
+
+        yield return new WaitForSeconds(attackDuration);
+
+        if (movementScript != null)
+            movementScript.enabled = true;
+
+
+        // Wait for animation to play (or use Animation Events if needed)
+        yield return new WaitForSeconds(attackCoolDown - attackDuration);
+
+        isAttacking = false;
     }
 
     private IEnumerator FireballBurstRoutine()

@@ -19,6 +19,8 @@ public class Lightningmage : MonoBehaviour
     public float lightningCastDuration = 1f;
     public float lightningCoolDown = 4f;
 
+    public MeleeHitbox swordHitbox;
+
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -50,9 +52,16 @@ public class Lightningmage : MonoBehaviour
         if (animator != null)
             animator.SetBool("isMoving", false);
 
+
+        if (swordHitbox != null)
+            swordHitbox.EnableHitbox();
+
         animator.SetTrigger("Melee");
 
         yield return new WaitForSeconds(attackDuration);
+
+        if (swordHitbox != null)
+            swordHitbox.DisableHitbox();
 
         if (movementScript != null)
             movementScript.enabled = true;
