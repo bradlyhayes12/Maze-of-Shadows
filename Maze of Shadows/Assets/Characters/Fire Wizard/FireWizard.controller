@@ -395,19 +395,22 @@ AnimatorStateMachine:
     m_Position: {x: 680, y: 50, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5897148973272270575}
-    m_Position: {x: 960, y: 70, z: 0}
+    m_Position: {x: 970, y: 50, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1136647857784748157}
-    m_Position: {x: 430, y: 220, z: 0}
+    m_Position: {x: 980, y: 300, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -408280677982158664}
     m_Position: {x: 660, y: 160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6506278118883920405}
-    m_Position: {x: 940, y: 170, z: 0}
+    m_Position: {x: 960, y: 170, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7680294270266327813}
     m_Position: {x: 680, y: -70, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 8094168606169612602}
+    m_Position: {x: 650, y: 300, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -415,7 +418,7 @@ AnimatorStateMachine:
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 3200, y: 380, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: 800, y: 260, z: 0}
+  m_ExitPosition: {x: 1260, y: 80, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -4661577061183851420}
 --- !u!1101 &7973519476332782974
@@ -440,3 +443,29 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1102 &8094168606169612602
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: charge
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 13cda93660258af45aed1a6cd061c62b, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
