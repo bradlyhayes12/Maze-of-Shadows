@@ -15,6 +15,11 @@ public class WandererMagican : MonoBehaviour
     public float attackDuration = 1f; // Length of the melee animation
     public float attackCoolDown = 2f;
 
+    [Header("Projectile Settings")]
+    public GameObject magicPrefab;
+    public Transform magicPoint;
+    public float magicSpeed = 5f;
+
     [Header("Magican Attack")]
     public float magicCastDuration = 2f;
     public float magicCoolDown = 4f;
@@ -89,5 +94,20 @@ public class WandererMagican : MonoBehaviour
         yield return new WaitForSeconds(magicCoolDown - magicCastDuration);
         isCasting = false;
 
+    }
+
+    public void ShootMagic()
+    {
+        if (magicPrefab != null && magicPoint != null)
+        {
+            GameObject magic = Instantiate(magicPrefab, magicPoint.position, Quaternion.identity);
+
+            Rigidbody2D rb = magic.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                float direction = transform.localScale.x > 0 ? 1 : -1;
+                rb.velocity = new Vector2(magicSpeed * direction, 0);
+            }
+        }
     }
 }

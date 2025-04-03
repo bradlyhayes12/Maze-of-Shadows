@@ -19,6 +19,11 @@ public class Lightningmage : MonoBehaviour
     public float lightningCastDuration = 1f;
     public float lightningCoolDown = 4f;
 
+    [Header("Projectile Settings")]
+    public GameObject LightningBoltPrefab;
+    public Transform lightningPoint;
+    public float lightningSpeed = 5f;
+
     public MeleeHitbox swordHitbox;
 
     void Start()
@@ -89,5 +94,20 @@ public class Lightningmage : MonoBehaviour
         yield return new WaitForSeconds(lightningCoolDown - lightningCastDuration);
         isCasting = false;
 
+    }
+
+    public void ShootLightningBolt()
+    {
+        if (LightningBoltPrefab != null && lightningPoint != null)
+        {
+            GameObject lightningbolt = Instantiate(LightningBoltPrefab, lightningPoint.position, Quaternion.identity);
+
+            Rigidbody2D rb = lightningbolt.GetComponent<Rigidbody2D>();
+            if(rb != null )
+            {
+                float direction = transform.localScale.x > 0 ? 1 : -1;
+                rb.velocity = new Vector2(lightningSpeed * direction, 0);
+            }
+        }
     }
 }

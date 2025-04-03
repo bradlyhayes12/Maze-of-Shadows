@@ -6,15 +6,20 @@ public class FireWizard : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
     private Animator animator;
-    private CharacterMovement movementScript;  // Updated this line!
+    private CharacterMovement movementScript;
 
     [Header("Fireball Attack")]
     public float fireballBurstTime = 1f;
     public float fireballCooldown = 5f;
     private bool canFire = true;
 
+    [Header("Projectile Settings")]
+    public GameObject fireballPrefab;
+    public Transform firePoint;
+    public float fireballSpeed = 5f;
+
     [Header("Melee Attack")]
-    public float attackDuration = 1f; // Length of the melee animation
+    public float attackDuration = 1f;
     public float attackCoolDown = 2f;
     private bool isAttacking = false;
 
@@ -24,8 +29,7 @@ public class FireWizard : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
-        movementScript = GetComponent<CharacterMovement>(); // get movement script
-
+        movementScript = GetComponent<CharacterMovement>();
     }
 
     void Update()
@@ -45,7 +49,6 @@ public class FireWizard : MonoBehaviour
     {
         isAttacking = true;
 
-        //Stop movement while swinging
         if (movementScript != null)
             movementScript.enabled = false;
 
@@ -65,10 +68,7 @@ public class FireWizard : MonoBehaviour
         if (movementScript != null)
             movementScript.enabled = true;
 
-
-        // Wait for animation to play (or use Animation Events if needed)
         yield return new WaitForSeconds(attackCoolDown - attackDuration);
-
         isAttacking = false;
     }
 
@@ -76,7 +76,6 @@ public class FireWizard : MonoBehaviour
     {
         canFire = false;
 
-        // Stop movement
         if (movementScript != null)
             movementScript.enabled = false;
 
@@ -89,22 +88,35 @@ public class FireWizard : MonoBehaviour
 
         while (timer < fireballBurstTime)
         {
-            animator.SetTrigger("Fireball");
-
+            animator.SetTrigger("Fireball"); // The animation will call ShootFireball()
             yield return new WaitForSeconds(0.5f);
             timer += 0.5f;
         }
 
-        // Resume movement
         if (movementScript != null)
             movementScript.enabled = true;
 
         Debug.Log("Firing done, cooldown...");
 
         yield return new WaitForSeconds(fireballCooldown);
-
         canFire = true;
 
         Debug.Log("Fireball ready!");
+    }
+
+    // Called from animation event
+    public void ShootFireball()
+    {
+        if (fireballPrefab != null && firePoint != null)
+        {
+            GameObject fireball = Instantiate(fireballPrefab, firePoint.position, Quaternion.identity);
+
+            Rigidbody2D rb = fireball.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                float direction = transform.localScale.x > 0 ? 1 : -1;
+                rb.velocity = new Vector2(fireballSpeed * direction, 0);
+            }
+        }
     }
 }
