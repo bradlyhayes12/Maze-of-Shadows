@@ -100,10 +100,10 @@ TextureImporter:
       name: Dead_0
       rect:
         serializedVersion: 2
-        x: 33
+        x: 0
         y: 0
-        width: 39
-        height: 58
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -121,10 +121,10 @@ TextureImporter:
       name: Dead_1
       rect:
         serializedVersion: 2
-        x: 160
+        x: 128
         y: 0
-        width: 38
-        height: 56
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -142,10 +142,10 @@ TextureImporter:
       name: Dead_2
       rect:
         serializedVersion: 2
-        x: 288
+        x: 256
         y: 0
-        width: 58
-        height: 40
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -163,10 +163,10 @@ TextureImporter:
       name: Dead_3
       rect:
         serializedVersion: 2
-        x: 416
+        x: 384
         y: 0
-        width: 62
-        height: 10
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

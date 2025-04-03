@@ -100,10 +100,10 @@ TextureImporter:
       name: Magic_sphere_0
       rect:
         serializedVersion: 2
-        x: 32
+        x: 0
         y: 0
-        width: 39
-        height: 63
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -121,10 +121,10 @@ TextureImporter:
       name: Magic_sphere_1
       rect:
         serializedVersion: 2
-        x: 163
+        x: 128
         y: 0
-        width: 44
-        height: 63
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -142,10 +142,10 @@ TextureImporter:
       name: Magic_sphere_2
       rect:
         serializedVersion: 2
-        x: 293
+        x: 256
         y: 0
-        width: 61
-        height: 65
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -163,10 +163,10 @@ TextureImporter:
       name: Magic_sphere_3
       rect:
         serializedVersion: 2
-        x: 420
+        x: 384
         y: 0
-        width: 62
-        height: 66
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -184,10 +184,10 @@ TextureImporter:
       name: Magic_sphere_4
       rect:
         serializedVersion: 2
-        x: 549
+        x: 512
         y: 0
-        width: 62
-        height: 65
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -205,10 +205,10 @@ TextureImporter:
       name: Magic_sphere_5
       rect:
         serializedVersion: 2
-        x: 676
+        x: 640
         y: 0
-        width: 65
-        height: 66
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -226,10 +226,10 @@ TextureImporter:
       name: Magic_sphere_6
       rect:
         serializedVersion: 2
-        x: 804
+        x: 768
         y: 0
-        width: 64
-        height: 66
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -247,10 +247,10 @@ TextureImporter:
       name: Magic_sphere_7
       rect:
         serializedVersion: 2
-        x: 931
+        x: 896
         y: 0
-        width: 63
-        height: 66
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -268,10 +268,10 @@ TextureImporter:
       name: Magic_sphere_8
       rect:
         serializedVersion: 2
-        x: 1060
+        x: 1024
         y: 0
-        width: 59
-        height: 66
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -289,10 +289,10 @@ TextureImporter:
       name: Magic_sphere_9
       rect:
         serializedVersion: 2
-        x: 1188
+        x: 1152
         y: 0
-        width: 61
-        height: 66
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -310,10 +310,10 @@ TextureImporter:
       name: Magic_sphere_10
       rect:
         serializedVersion: 2
-        x: 1316
+        x: 1280
         y: 0
-        width: 64
-        height: 67
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -331,10 +331,10 @@ TextureImporter:
       name: Magic_sphere_11
       rect:
         serializedVersion: 2
-        x: 1445
+        x: 1408
         y: 0
-        width: 63
-        height: 65
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -352,10 +352,10 @@ TextureImporter:
       name: Magic_sphere_12
       rect:
         serializedVersion: 2
-        x: 1562
+        x: 1536
         y: 0
-        width: 78
-        height: 66
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -373,10 +373,10 @@ TextureImporter:
       name: Magic_sphere_13
       rect:
         serializedVersion: 2
-        x: 1686
+        x: 1664
         y: 0
-        width: 70
-        height: 65
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -394,10 +394,10 @@ TextureImporter:
       name: Magic_sphere_14
       rect:
         serializedVersion: 2
-        x: 1816
+        x: 1792
         y: 0
-        width: 76
-        height: 65
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -415,10 +415,10 @@ TextureImporter:
       name: Magic_sphere_15
       rect:
         serializedVersion: 2
-        x: 1953
+        x: 1920
         y: 0
-        width: 59
-        height: 65
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
