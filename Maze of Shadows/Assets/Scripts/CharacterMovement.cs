@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    public float moveSpeed = .0005f;
     private Rigidbody2D rb;
     private Animator animator;
     private Vector2 movement;
@@ -20,26 +20,27 @@ public class CharacterMovement : MonoBehaviour
 
     void Update()
     {
-       
-            movement.x = Input.GetAxisRaw("Horizontal");
-            movement.y = Input.GetAxisRaw("Vertical");
 
-            // Check if character is moving
-            bool isMoving = movement.magnitude > 0;
-            animator.SetBool("isMoving", isMoving);
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
 
-            // Flip the character when moving left or right
-            if (movement.x > 0)
-            {
-                spriteRenderer.flipX = true; // Face right
-            }
-            else if (movement.x < 0)
-            {
-                spriteRenderer.flipX = false; // Face left
-            }
+
+        bool isMoving = Mathf.Abs(movement.x) > 0 || Mathf.Abs(movement.y) > 0;
+        animator.SetBool("isMoving", isMoving);
+
+        // Flip the character left/right instantly
+        if (movement.x > 0)
+        {
+            spriteRenderer.flipX = false; // Face right (usually false is right)
+        }
+        else if (movement.x < 0)
+        {
+            spriteRenderer.flipX = true; // Face left
+        }
+
     }
 
-    void FixedUpdate()
+        void FixedUpdate()
     {
           rb.MovePosition(rb.position + movement.normalized * moveSpeed * Time.fixedDeltaTime);
     }
