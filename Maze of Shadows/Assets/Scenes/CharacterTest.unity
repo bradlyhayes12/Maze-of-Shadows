@@ -132,7 +132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2214055616450630615, guid: 31806f62baa39f74eac53003d0c9b2c4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.25
+      value: -1.186
       objectReference: {fileID: 0}
     - target: {fileID: 2214055616450630615, guid: 31806f62baa39f74eac53003d0c9b2c4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -170,10 +170,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6535474106810718155, guid: 31806f62baa39f74eac53003d0c9b2c4, type: 3}
+      propertyPath: moveSpeed
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6719516800026786004, guid: 31806f62baa39f74eac53003d0c9b2c4, type: 3}
       propertyPath: m_Name
       value: Wanderer Magican
       objectReference: {fileID: 0}
+    - target: {fileID: 6719516800026786004, guid: 31806f62baa39f74eac53003d0c9b2c4, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8835040018533345090, guid: 31806f62baa39f74eac53003d0c9b2c4, type: 3}
+      propertyPath: magicPrefab
+      value: 
+      objectReference: {fileID: 3358180033129567003, guid: 92abdf54fbaadf6438fc0038b036abe9, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -187,13 +199,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6676372601863440168, guid: a271211d6edf66e43b4dbb93e30130a9, type: 3}
+      propertyPath: lightningSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6676372601863440168, guid: a271211d6edf66e43b4dbb93e30130a9, type: 3}
+      propertyPath: LightningBoltPrefab
+      value: 
+      objectReference: {fileID: 4731639660512323381, guid: 2d023759f9ee5fa498a688384952fa66, type: 3}
+    - target: {fileID: 7263820073597890850, guid: a271211d6edf66e43b4dbb93e30130a9, type: 3}
+      propertyPath: moveSpeed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7433940311471029665, guid: a271211d6edf66e43b4dbb93e30130a9, type: 3}
       propertyPath: m_Name
       value: LightningMage
       objectReference: {fileID: 0}
+    - target: {fileID: 7433940311471029665, guid: a271211d6edf66e43b4dbb93e30130a9, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 8169201103716855432, guid: a271211d6edf66e43b4dbb93e30130a9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5
+      value: 0.067
       objectReference: {fileID: 0}
     - target: {fileID: 8169201103716855432, guid: a271211d6edf66e43b4dbb93e30130a9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -246,7 +274,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 581087203861929027, guid: f397dfdf0af5a6b459752f558d134b4b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.25
+      value: 0.829
       objectReference: {fileID: 0}
     - target: {fileID: 581087203861929027, guid: f397dfdf0af5a6b459752f558d134b4b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -284,9 +312,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2342195722301527022, guid: f397dfdf0af5a6b459752f558d134b4b, type: 3}
+      propertyPath: moveSpeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4067418052371683623, guid: f397dfdf0af5a6b459752f558d134b4b, type: 3}
+      propertyPath: fireballSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4067418052371683623, guid: f397dfdf0af5a6b459752f558d134b4b, type: 3}
+      propertyPath: fireballPrefab
+      value: 
+      objectReference: {fileID: 3406064410301751459, guid: b24bfc0617cf4d643a07eba0fae2cbff, type: 3}
     - target: {fileID: 7638777949018067405, guid: f397dfdf0af5a6b459752f558d134b4b, type: 3}
       propertyPath: m_Name
       value: FireWizard
+      objectReference: {fileID: 0}
+    - target: {fileID: 7638777949018067405, guid: f397dfdf0af5a6b459752f558d134b4b, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

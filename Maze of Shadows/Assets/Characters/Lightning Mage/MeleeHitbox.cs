@@ -32,6 +32,8 @@ public class MeleeHitbox : MonoBehaviour
         {
             Debug.Log("Hit wall: " + other.name);
         }
+        
+           
 
     }
 }

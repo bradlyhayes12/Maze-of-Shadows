@@ -25,6 +25,19 @@ public class LightningBolt : MonoBehaviour
         //// Add hit logic (like damage, explosion, etc.)
         //Debug.Log("Fireball hit: " + other.name); 
         //Destroy(gameObject); // Destroy on hit
+        WandererMagican magican = other.GetComponent<WandererMagican>();
+        if (magican != null) 
+            {
+            magican.TakeHit();
+            }
+        Destroy(gameObject);
+
+        FireWizard fireWizard = other.GetComponent<FireWizard>();
+        if(fireWizard != null)
+        {
+            fireWizard.TakeHit();
+        }
+        Destroy(gameObject);
     }
 
     public void DestroySelf(AnimationEvent evt = null)

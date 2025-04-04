@@ -11,6 +11,9 @@ public class Lightningmage : MonoBehaviour
     private bool isAttacking = false;
     private bool isCasting = false;
 
+    private int hitCount = 0;
+    private bool isDead = false; 
+
     [Header("Melee Attack")]
     public float attackDuration = 1f; // Length of the melee animation
     public float attackCoolDown = 2f;
@@ -35,6 +38,8 @@ public class Lightningmage : MonoBehaviour
 
     void Update()
     {
+        if (isDead) return;
+
         if (Input.GetKeyDown(KeyCode.E) && !isAttacking)
         {
             StartCoroutine(MeleeAttack());
@@ -105,9 +110,39 @@ public class Lightningmage : MonoBehaviour
             Rigidbody2D rb = lightningbolt.GetComponent<Rigidbody2D>();
             if(rb != null )
             {
-                float direction = transform.localScale.x > 0 ? 1 : -1;
-                rb.velocity = new Vector2(lightningSpeed * direction, 0);
+                Vector2 shootDirection = transform.right; // 'right' always points in local +X direction
+                if (transform.localScale.x < 0)
+                    shootDirection = -transform.right; // Flip if facing left
+
+                rb.velocity = shootDirection * lightningSpeed;
             }
+        }
+    }
+
+    public void TakeHit()
+    {
+        if (isDead) return;
+
+        hitCount++;
+        Debug.Log("Lightning Mage hit! Current hits: " + hitCount);
+
+        if (hitCount >= 3)
+        {
+            Die();
+        }
+        else
+        {
+            animator.SetTrigger("Hurt");
+        }
+    }
+
+    private void Die()
+    {
+        isDead = true;
+        animator.SetTrigger("Death");
+        if (movementScript != null)
+        {
+            movementScript.enabled = false;
         }
     }
 }
