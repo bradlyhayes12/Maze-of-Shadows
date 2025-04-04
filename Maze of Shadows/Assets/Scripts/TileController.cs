@@ -11,7 +11,7 @@ public class TileController : MonoBehaviour
     public int y; // Grid Y-coordinate
 
     [Header("Tile Directions")]
-    [Tooltip("e.g. 'UD' for Up/Down, 'LR' for Left/Right, 'DR' for Down/Right, etc.")]
+    [Tooltip("e.g. 'DR', 'LD', 'LRD', etc. Must match PlaySceneManager RoomMappings exactly.")]
     public string directionString;
 
     [Header("UI")]

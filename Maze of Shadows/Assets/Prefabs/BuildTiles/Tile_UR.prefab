@@ -105,6 +105,7 @@ MonoBehaviour:
   boardManager: {fileID: 0}
   x: 0
   y: 0
+  directionString: UR
   tileText: {fileID: 0}
 --- !u!61 &-8386692619172552821
 BoxCollider2D:
