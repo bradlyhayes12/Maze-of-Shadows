@@ -234,7 +234,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d50eaa009403a2f41833ceb5de5c326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RoomTile: {fileID: 7888131393970377452, guid: e26e8474220e8b34183a7e09eaefc880, type: 3}
+  roomMappings:
+  - buildTileDirection: DR
+    roomPrefab: {fileID: 7888131393970377452, guid: e26e8474220e8b34183a7e09eaefc880, type: 3}
+  - buildTileDirection: LD
+    roomPrefab: {fileID: 7888131393970377452, guid: ef94d8439ac1b3d438dd7be68e8d909b, type: 3}
+  - buildTileDirection: LR
+    roomPrefab: {fileID: 7888131393970377452, guid: 3cb4904c024884a46807c67da7baab95, type: 3}
+  - buildTileDirection: LRD
+    roomPrefab: {fileID: 7888131393970377452, guid: a9367360e47063d43a7b1bd6ec6111af, type: 3}
+  - buildTileDirection: LRU
+    roomPrefab: {fileID: 7888131393970377452, guid: c937062189760254280927b1cb07611d, type: 3}
+  - buildTileDirection: LU
+    roomPrefab: {fileID: 7888131393970377452, guid: 9bd36e7e5b29f2547b77ca7e55c792c3, type: 3}
+  - buildTileDirection: LUD
+    roomPrefab: {fileID: 7888131393970377452, guid: 40a44d72e8f171e4fb7ccae7326bd1e2, type: 3}
+  - buildTileDirection: UD
+    roomPrefab: {fileID: 7888131393970377452, guid: 0ed03acdf5c114042be8fd707a94aa7e, type: 3}
+  - buildTileDirection: UDR
+    roomPrefab: {fileID: 7888131393970377452, guid: 0c161635dda39f941af9c3eefac96c29, type: 3}
+  - buildTileDirection: UR
+    roomPrefab: {fileID: 7888131393970377452, guid: 0baef1d2dc67f3d4e9b05cbec3269652, type: 3}
+  - buildTileDirection: LD
+    roomPrefab: {fileID: 7888131393970377452, guid: ef94d8439ac1b3d438dd7be68e8d909b, type: 3}
   PlayerSpawnRoom: {fileID: 1681545153798606014, guid: 43bde5486e9ffe544803c1ca5d9b7748, type: 3}
   roomWidth: 17.77157
   roomHeight: 9.66798
