@@ -3,39 +3,51 @@ using TMPro;
 
 public class TileController : MonoBehaviour
 {
+    [Header("References")]
     public BoardManager boardManager;
-    public int x;         // Current grid x-coordinate
-    public int y;         // Current grid y-coordinate
-    // public int tileNumber;
+
+    [Header("Tile Coordinates")]
+    public int x; // Grid X-coordinate
+    public int y; // Grid Y-coordinate
+
+    [Header("Tile Directions")]
+    [Tooltip("e.g. 'UD' for Up/Down, 'LR' for Left/Right, 'DR' for Down/Right, etc.")]
+    public string directionString;
+
+    [Header("UI")]
     public TextMeshProUGUI tileText;
 
-    void Start() {
-        // Ensure the text component is set.
-        if (tileText == null) tileText = GetComponentInChildren<TextMeshProUGUI>();
+    void Start()
+    {
+        // Ensure the text component is found
+        if (tileText == null)
+            tileText = GetComponentInChildren<TextMeshProUGUI>();
 
-        // Disable the text on start so it's not visible
-        if (tileText != null) tileText.enabled = false;
+        // Hide text at the start
+        if (tileText != null)
+            tileText.enabled = false;
     }
 
-
     /// <summary>
-    /// Update the displayed number on the tile.
+    /// Shows the given text on the tile (and re-enables the text component).
     /// </summary>
-    public void UpdateTileText(string text) {
-        if (tileText != null) {
+    /// <param name="text">Text to display</param>
+    public void UpdateTileText(string text)
+    {
+        if (tileText != null)
+        {
             tileText.text = text;
             tileText.enabled = true;
         }
     }
 
-
-    void OnMouseDown() {
-        // Debug.Log("Tile " + tileNumber + " clicked.");
-        if (boardManager != null) {
+    void OnMouseDown()
+    {
+        // Attempt to move the tile if BoardManager is available
+        if (boardManager != null)
+        {
             bool moved = boardManager.TryMoveTile(x, y);
-            // if (!moved)
-            //     Debug.Log("Tile " + tileNumber + " is not adjacent to the empty spot.");
+            // if (!moved) Debug.Log("Tile is not adjacent to the empty spot.");
         }
     }
-
 }
