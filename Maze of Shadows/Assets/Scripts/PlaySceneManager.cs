@@ -1,23 +1,46 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlaySceneManager : MonoBehaviour
 {
+    [System.Serializable]
+    public struct RoomMapping
+    {
+        public string buildTileDirection;  // e.g. "DR"
+        public GameObject roomPrefab;      // e.g. Room_DR
+    }
+
     [Header("Room Tile Setup")]
-    [SerializeField] private GameObject RoomTile; // Assign in Inspector
+    [SerializeField] private RoomMapping[] roomMappings;
     [SerializeField] private GameObject PlayerSpawnRoom;
 
-    // 1) Hardcode the known size of each room
     [SerializeField] private float roomWidth  = 17.77157f;
     [SerializeField] private float roomHeight = 9.66798f;
-    [SerializeField] private float extraGap   = 0f; 
+    [SerializeField] private float extraGap   = 0f;
 
     private BoardManager boardManager;
+    private Dictionary<string, GameObject> directionToRoomDict;
 
     void Start()
     {
-        // 2) Find BoardManager
+        // Build the dictionary for quick lookups
+        directionToRoomDict = new Dictionary<string, GameObject>();
+        foreach (RoomMapping mapping in roomMappings)
+        {
+            if (!directionToRoomDict.ContainsKey(mapping.buildTileDirection))
+            {
+                directionToRoomDict.Add(mapping.buildTileDirection, mapping.roomPrefab);
+            }
+            else
+            {
+                Debug.LogWarning($"Duplicate direction key found: {mapping.buildTileDirection}. " +
+                                 "Make sure each direction is unique!");
+            }
+        }
+
+        // Find the BoardManager from the Build phase
         boardManager = FindObjectOfType<BoardManager>();
         if (boardManager == null)
         {
@@ -25,8 +48,6 @@ public class PlaySceneManager : MonoBehaviour
             return;
         }
 
-        // 3) (Skip tilemap measuring code — we have the numbers!)
-        // Start the coroutine to wait for PlayPhase to be active
         StartCoroutine(WaitForActiveSceneAndSpawn());
     }
 
@@ -34,8 +55,6 @@ public class PlaySceneManager : MonoBehaviour
     {
         while (SceneManager.GetActiveScene().name != "PlayPhase")
         {
-            Debug.Log("Waiting for PlayPhase to become active. " +
-                      "Current active scene: " + SceneManager.GetActiveScene().name);
             yield return null;
         }
 
@@ -64,22 +83,28 @@ public class PlaySceneManager : MonoBehaviour
                     0f
                 ) - bigBoardOffset;
 
-                GameObject tileObj = originalBoard[x, y];
-
-                if (tileObj != null)
+                GameObject buildTileObj = originalBoard[x, y];
+                if (buildTileObj != null)
                 {
-                    GameObject roomTile = Instantiate(RoomTile, spawnPos, Quaternion.identity);
-                    
-                    TileController tileController = tileObj.GetComponent<TileController>();
-                    RoomTileScript roomScript = roomTile.GetComponent<RoomTileScript>();
-                    roomScript.originalTileNumber = tileController.tileNumber;
+                    TileController tileCtrl = buildTileObj.GetComponent<TileController>();
+                    string direction = tileCtrl.directionString; // e.g. "DR"
+                    Debug.Log($"Spawning tile at {x},{y} with direction = '{direction}'.");
+
+                    if (directionToRoomDict.TryGetValue(direction, out GameObject roomPrefab))
+                    {
+                        Instantiate(roomPrefab, spawnPos, Quaternion.identity);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"No room prefab mapping found for direction '{direction}'");
+                    }
                 }
                 else
                 {
+                    // Empty cell becomes the PlayerSpawnRoom
                     Instantiate(PlayerSpawnRoom, spawnPos, Quaternion.identity);
                 }
             }
         }
     }
-
 }

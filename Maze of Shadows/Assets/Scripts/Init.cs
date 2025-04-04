@@ -9,4 +9,9 @@ public class Init : MonoBehaviour
     void Start() {
         gameObject.GetComponent<ViewManagerScript>().LoadScene("StartMenu");
     }
+
+    void Awake() {
+        DontDestroyOnLoad(this.gameObject);
+    }
+    
 }
