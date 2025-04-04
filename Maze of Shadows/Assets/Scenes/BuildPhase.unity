@@ -709,7 +709,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 411f636eb96f97a479f0d62d7c05dc0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 697470760312570539, guid: ce1dacaaf3f3f4442b842e7fb333774d, type: 3}
+  tilePrefabs:
+  - {fileID: 697470760312570539, guid: 0bb7e047b7b9a304fafdef6a77a07c55, type: 3}
+  - {fileID: 697470760312570539, guid: b05c950a03244eb43a421d22fe45f5bd, type: 3}
+  - {fileID: 697470760312570539, guid: 27cddfd16ec755547b2d37686de0d87f, type: 3}
+  - {fileID: 697470760312570539, guid: ec18b8033cf81ab49af6f03cfb9d939d, type: 3}
+  - {fileID: 697470760312570539, guid: a95fe91a12ea63745a1148730afc22bf, type: 3}
+  - {fileID: 697470760312570539, guid: ce2fd61faf8a5fb4da69270115ba1a17, type: 3}
+  - {fileID: 697470760312570539, guid: f2c09e95518d23c4dbd34aa639605d22, type: 3}
+  - {fileID: 697470760312570539, guid: c996f0558fbccd344808cc9afa8ff600, type: 3}
+  - {fileID: 697470760312570539, guid: 41552bea3788c2c4b95c0a058f16b2dc, type: 3}
+  - {fileID: 697470760312570539, guid: 8fc20ae754e42874a9dcc166fb1d22eb, type: 3}
+  - {fileID: 697470760312570539, guid: ce1dacaaf3f3f4442b842e7fb333774d, type: 3}
   boardSize: 5
   tileSize: 1
   emptySpot: {x: 0, y: 0}

@@ -1,65 +1,119 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class BoardManager : MonoBehaviour{
-    public GameObject tilePrefab;
-    public int boardSize; 
-    public float tileSize = 1.0f; 
+public class BoardManager : MonoBehaviour {
+    [Header("Tile Prefabs")]
+    public GameObject[] tilePrefabs;
+
+    [Header("Board Settings")]
+    public int boardSize;          // Typically 3 for a 3x3 board
+    public float tileSize = 1.0f;  // Physical size of each tile
 
     [HideInInspector] public GameObject[,] board;
     [HideInInspector] public Vector2Int emptySpot; // Position of the empty cell
-    public int moveCount = 0;
+    public int moveCount = 0;                      // Tracks how many times a tile has been moved
 
-    // Store board offset for reuse
-    private Vector3 boardOffset;
+    private Vector3 boardOffset;                   // Center offset for spawning the board
     private ViewManagerScript viewManagerScript;
-    
-    // Initialize the board when the script starts.
-    public void Start() {InitializeBoard();}
 
+    void Start() {
+        InitializeBoard();
+    }
+
+    /// <summary>
+    /// Randomly choose N unique tiles from a pool of prefabs.
+    /// </summary>
+    private GameObject[] ChooseRandomTiles(GameObject[] pool, int count) {
+
+        if (pool.Length < count) {
+            Debug.LogWarning("Not enough tile prefabs to fulfill unique selection. " +
+                             $"Pool size: {pool.Length}, requested: {count}");
+            count = pool.Length;
+        }
+
+        // Convert to List to shuffle easily.
+        List<GameObject> list = new List<GameObject>(pool);
+
+        // Fisher-Yates shuffle
+        System.Random rng = new System.Random();
+        int n = list.Count;
+        while (n > 1) {
+            n--;
+            int k = rng.Next(n + 1);
+            GameObject temp = list[k];
+            list[k] = list[n];
+            list[n] = temp;
+        }
+
+        // Return the first 'count' shuffled items
+        return list.GetRange(0, count).ToArray();
+    }
+
+    /// <summary>
+    /// Spawns the board tiles, leaving one cell empty.
+    /// </summary>
     void InitializeBoard() {
-        // Assuming there's an Init script in the scene with mapDimensions.
+        // Retrieve boardSize from an Init script (if you have one).
+
         boardSize = FindObjectOfType<Init>().mapDimensions;
+        
         board = new GameObject[boardSize, boardSize];
+
+        // The total number of tiles to place (one cell is empty).
         int totalTiles = boardSize * boardSize - 1;
-        int number = 1;
 
-        // Center the board at (0,0)
-        boardOffset = new Vector3((boardSize - 1) * tileSize / 2, (boardSize - 1) * tileSize / 2, 0f);
+        // Randomly choose 'totalTiles' distinct tile prefabs from the tilePrefabs array
+        GameObject[] chosenTiles = ChooseRandomTiles(tilePrefabs, totalTiles);
 
+        // For laying tiles in the grid
+        int tileIndex = 0;
+        int number = 1; 
+
+        // Calculate board offset so the board is centered at (0,0)
+        boardOffset = new Vector3(
+            (boardSize - 1) * tileSize / 2,
+            (boardSize - 1) * tileSize / 2,
+            0f
+        );
+
+        // Loop through the grid and place tiles or leave empty
         for (int y = 0; y < boardSize; y++) {
             for (int x = 0; x < boardSize; x++) {
+                // As long as we haven't placed all of our tiles yet
                 if (number <= totalTiles) {
-                    // Adjust spawn position by subtracting boardOffset.
+                    // Calculate position (subtract offset to center the board)
                     Vector3 spawnPos = new Vector3(x * tileSize, y * tileSize, 0f) - boardOffset;
-                    GameObject tileObj = Instantiate(tilePrefab, spawnPos, Quaternion.identity, transform);
-                    
-                    // Configure the tile.
+
+                    // Spawn a randomly chosen tile from our selected group
+                    GameObject tileObj = Instantiate(chosenTiles[tileIndex], spawnPos, Quaternion.identity, transform);
+
+                    // Configure tile settings
                     TileController tile = tileObj.GetComponent<TileController>();
                     tile.boardManager = this;
                     tile.x = x;
                     tile.y = y;
-                    // tile.tileNumber = number;
-                    // tile.UpdateTileText();
-                    
-                    // TextMeshProUGUI tileText = FindObjectOfType<TextMeshProUGUI>();
-                    // if (tileText != null)
-                    //     tileText.SetText($"{number}");
 
+                    // Store the tile in our board array
                     board[x, y] = tileObj;
+
+                    tileIndex++;
                     number++;
                 }
                 else {
+                    // The last cell is empty
                     board[x, y] = null;
                     emptySpot = new Vector2Int(x, y);
                 }
             }
         }
-        // PrintBoardState();
     }
 
+    /// <summary>
+    /// Attempts to move a tile if it is adjacent to the empty spot.
+    /// </summary>
     public bool TryMoveTile(int tileX, int tileY) {
         if (IsAdjacent(new Vector2Int(tileX, tileY), emptySpot)) {
             MoveTile(tileX, tileY);
@@ -68,78 +122,90 @@ public class BoardManager : MonoBehaviour{
         return false;
     }
 
+    /// <summary>
+    /// Checks if two cells are next to each other (Manhattan distance == 1).
+    /// </summary>
     bool IsAdjacent(Vector2Int a, Vector2Int b) {
         int dx = Mathf.Abs(a.x - b.x);
         int dy = Mathf.Abs(a.y - b.y);
-        return (dx + dy) == 1; // Only one cell apart.
+        return (dx + dy) == 1;
     }
 
+    /// <summary>
+    /// Moves the tile at (tileX, tileY) into the empty spot.
+    /// </summary>
     void MoveTile(int tileX, int tileY) {
         GameObject tileObj = board[tileX, tileY];
         if (tileObj == null) return;
 
-        // Swap the tile with the empty spot.
+        // Swap tile with the empty spot
         board[emptySpot.x, emptySpot.y] = tileObj;
         board[tileX, tileY] = null;
 
+        // Update tile's x, y to the empty spot
         TileController tile = tileObj.GetComponent<TileController>();
         tile.x = emptySpot.x;
         tile.y = emptySpot.y;
 
+        // Move the tile visually
         tileObj.transform.position = new Vector3(tile.x * tileSize, tile.y * tileSize, 0f) - boardOffset;
 
-        // Update the empty spot.
+        // Update the empty spot to the old tile position
         emptySpot = new Vector2Int(tileX, tileY);
+
         moveCount++;
         Debug.Log("Move Count: " + moveCount);
-        // PrintBoardState();
     }
 
-    // void PrintBoardState() {
-    //     string state = "\nBoard State:\n";
-    //     for (int y = boardSize - 1; y >= 0; y--){
-    //         for (int x = 0; x < boardSize; x++){
-    //             if (board[x, y] != null){
-    //                 TileController tile = board[x, y].GetComponent<TileController>();
-    //                 state += tile.tileNumber.ToString("D2") + " ";
-    //             }
-    //             else state += "EE ";
-    //         }
-    //         state += "\n";
-    //     }
-    //     Debug.Log(state);
-    // }
+    /// <summary>
+    /// Public helper to check adjacency for other scripts.
+    /// </summary>
+    public bool AreCellsAdjacent(Vector2Int a, Vector2Int b) {
+        return IsAdjacent(a, b);
+    }
 
-    public bool AreCellsAdjacent(Vector2Int a, Vector2Int b){return IsAdjacent(a, b);}
-
-    public void OnPlayButtonClicked()
-{
-        // Make sure BoardManager persists.
+    /// <summary>
+    /// Called when you press "Play" to transition from BuildPhase to PlayPhase.
+    /// </summary>
+    public void OnPlayButtonClicked() {
+        // Keep BoardManager alive across scene loads.
         DontDestroyOnLoad(gameObject);
+
+        // Hide visuals and disable colliders.
         HideVisualsAndDisableInteraction();
 
+        // Switch scenes via ViewManagerScript
         viewManagerScript = FindObjectOfType<ViewManagerScript>();
-        if (viewManagerScript != null){
+        if (viewManagerScript != null) {
             viewManagerScript.LoadScene("PlayPhase");
             viewManagerScript.UnloadScene("BuildPhase");
+        } else {
+            Debug.LogError("ViewManagerScript not found.");
         }
-        else Debug.LogError("ViewManagerScript not found.");
     }
 
-    private void HideVisualsAndDisableInteraction(){
-        // Disable this object's renderer if present.
+    /// <summary>
+    /// Hides all visuals and disables interactions for the entire board (and children).
+    /// </summary>
+    private void HideVisualsAndDisableInteraction() {
+        // If this object has a renderer, disable it
         Renderer mainRenderer = GetComponent<Renderer>();
-        if (mainRenderer != null) mainRenderer.enabled = false;
+        if (mainRenderer != null)
+            mainRenderer.enabled = false;
 
-        // Disable all child renderers.
-        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        // Disable all child renderers
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>()) {
             renderer.enabled = false;
+        }
 
-        // Disable all colliders.
-        foreach (Collider collider in GetComponentsInChildren<Collider>())
+        // Disable all colliders
+        foreach (Collider collider in GetComponentsInChildren<Collider>()) {
             collider.enabled = false;
+        }
 
-        foreach (Canvas canvas in GetComponentsInChildren<Canvas>())
+        // Disable all canvases (text, etc.)
+        foreach (Canvas canvas in GetComponentsInChildren<Canvas>()) {
             canvas.enabled = false;
+        }
     }
 }
