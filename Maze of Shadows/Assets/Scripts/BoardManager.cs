@@ -41,12 +41,12 @@ public class BoardManager : MonoBehaviour{
                     tile.boardManager = this;
                     tile.x = x;
                     tile.y = y;
-                    tile.tileNumber = number;
-                    tile.UpdateTileText();
+                    // tile.tileNumber = number;
+                    // tile.UpdateTileText();
                     
-                    TextMeshProUGUI tileText = FindObjectOfType<TextMeshProUGUI>();
-                    if (tileText != null)
-                        tileText.SetText($"{number}");
+                    // TextMeshProUGUI tileText = FindObjectOfType<TextMeshProUGUI>();
+                    // if (tileText != null)
+                    //     tileText.SetText($"{number}");
 
                     board[x, y] = tileObj;
                     number++;
@@ -57,7 +57,7 @@ public class BoardManager : MonoBehaviour{
                 }
             }
         }
-        PrintBoardState();
+        // PrintBoardState();
     }
 
     public bool TryMoveTile(int tileX, int tileY) {
@@ -92,23 +92,23 @@ public class BoardManager : MonoBehaviour{
         emptySpot = new Vector2Int(tileX, tileY);
         moveCount++;
         Debug.Log("Move Count: " + moveCount);
-        PrintBoardState();
+        // PrintBoardState();
     }
 
-    void PrintBoardState() {
-        string state = "\nBoard State:\n";
-        for (int y = boardSize - 1; y >= 0; y--){
-            for (int x = 0; x < boardSize; x++){
-                if (board[x, y] != null){
-                    TileController tile = board[x, y].GetComponent<TileController>();
-                    state += tile.tileNumber.ToString("D2") + " ";
-                }
-                else state += "EE ";
-            }
-            state += "\n";
-        }
-        Debug.Log(state);
-    }
+    // void PrintBoardState() {
+    //     string state = "\nBoard State:\n";
+    //     for (int y = boardSize - 1; y >= 0; y--){
+    //         for (int x = 0; x < boardSize; x++){
+    //             if (board[x, y] != null){
+    //                 TileController tile = board[x, y].GetComponent<TileController>();
+    //                 state += tile.tileNumber.ToString("D2") + " ";
+    //             }
+    //             else state += "EE ";
+    //         }
+    //         state += "\n";
+    //     }
+    //     Debug.Log(state);
+    // }
 
     public bool AreCellsAdjacent(Vector2Int a, Vector2Int b){return IsAdjacent(a, b);}
 
