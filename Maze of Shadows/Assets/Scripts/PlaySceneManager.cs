@@ -13,7 +13,7 @@ public class PlaySceneManager : MonoBehaviour
     }
 
     [Header("Room Tile Setup")]
-    [SerializeField] private RoomMapping[] roomMappings;
+    public RoomMapping[] roomMappings;
     [SerializeField] private GameObject PlayerSpawnRoom;
 
     [SerializeField] private float roomWidth  = 17.77157f;
