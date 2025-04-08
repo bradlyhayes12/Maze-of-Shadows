@@ -204,6 +204,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6676372601863440168, guid: a271211d6edf66e43b4dbb93e30130a9, type: 3}
+      propertyPath: lightningCoolDown
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6676372601863440168, guid: a271211d6edf66e43b4dbb93e30130a9, type: 3}
       propertyPath: LightningBoltPrefab
       value: 
       objectReference: {fileID: 4731639660512323381, guid: 2d023759f9ee5fa498a688384952fa66, type: 3}
@@ -319,6 +323,10 @@ PrefabInstance:
     - target: {fileID: 4067418052371683623, guid: f397dfdf0af5a6b459752f558d134b4b, type: 3}
       propertyPath: fireballSpeed
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4067418052371683623, guid: f397dfdf0af5a6b459752f558d134b4b, type: 3}
+      propertyPath: attackCoolDown
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4067418052371683623, guid: f397dfdf0af5a6b459752f558d134b4b, type: 3}
       propertyPath: fireballPrefab

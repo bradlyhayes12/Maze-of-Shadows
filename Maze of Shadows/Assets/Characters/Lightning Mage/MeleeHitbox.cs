@@ -32,8 +32,14 @@ public class MeleeHitbox : MonoBehaviour
         {
             Debug.Log("Hit wall: " + other.name);
         }
-        
-           
+
+        FireWizard fireWizard = other.GetComponent<FireWizard>();
+        if (fireWizard != null)
+        {
+            fireWizard.TakeHit();
+        }
+        Destroy(gameObject);
+
 
     }
 }
