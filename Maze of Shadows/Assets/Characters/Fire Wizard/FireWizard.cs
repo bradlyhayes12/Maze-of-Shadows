@@ -8,6 +8,9 @@ public class FireWizard : MonoBehaviour
     private Animator animator;
     private CharacterMovement movementScript;
 
+    private int hitCount = 0;
+    private bool isDead = false;
+
     [Header("Fireball Attack")]
     public float fireballBurstTime = 1f;
     public float fireballCooldown = 5f;
@@ -117,6 +120,33 @@ public class FireWizard : MonoBehaviour
                 float direction = transform.localScale.x > 0 ? 1 : -1;
                 rb.velocity = new Vector2(fireballSpeed * direction, 0);
             }
+        }
+    }
+
+    public void TakeHit()
+    {
+        if (isDead) return;
+
+        hitCount++;
+        Debug.Log("Fire Wizartd hit! Current hits: " + hitCount);
+
+        if (hitCount >= 3)
+        {
+            Die();
+        }
+        else
+        {
+            animator.SetTrigger("Hurt");
+        }
+    }
+
+    private void Die()
+    {
+        isDead = true;
+        animator.SetTrigger("Death");
+        if (movementScript != null)
+        {
+            movementScript.enabled = false;
         }
     }
 }
