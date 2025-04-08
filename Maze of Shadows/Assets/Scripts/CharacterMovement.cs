@@ -28,14 +28,20 @@ public class CharacterMovement : MonoBehaviour
         bool isMoving = Mathf.Abs(movement.x) > 0 || Mathf.Abs(movement.y) > 0;
         animator.SetBool("isMoving", isMoving);
 
-        // Flip the character left/right instantly
+        // Flip character by scaling, not by spriteRenderer.flipX
         if (movement.x > 0)
         {
-            spriteRenderer.flipX = false; // Face right (usually false is right)
+            // Face right
+            Vector3 scale = transform.localScale;
+            scale.x = Mathf.Abs(scale.x); // Make sure x is positive
+            transform.localScale = scale;
         }
         else if (movement.x < 0)
         {
-            spriteRenderer.flipX = true; // Face left
+            // Face left
+            Vector3 scale = transform.localScale;
+            scale.x = -Mathf.Abs(scale.x); // Make sure x is negative
+            transform.localScale = scale;
         }
 
     }
