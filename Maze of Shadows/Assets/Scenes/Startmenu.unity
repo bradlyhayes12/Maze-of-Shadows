@@ -213,6 +213,7 @@ GameObject:
   - component: {fileID: 535074301}
   - component: {fileID: 535074300}
   - component: {fileID: 535074299}
+  - component: {fileID: 535074302}
   m_Layer: 5
   m_Name: MapSize3
   m_TagString: Untagged
@@ -283,7 +284,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 535074300}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 535074302}
+        m_TargetAssemblyTypeName: MapSizeButton, MyModule
+        m_MethodName: SetBoardSize
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &535074300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,6 +335,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 535074297}
   m_CullTransparentMesh: 1
+--- !u!114 &535074302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535074297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d779d8f8a9b70794a9357bbb4d5cf97c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 3
 --- !u!1 &643635214
 GameObject:
   m_ObjectHideFlags: 0
@@ -879,6 +905,7 @@ GameObject:
   - component: {fileID: 1542390953}
   - component: {fileID: 1542390952}
   - component: {fileID: 1542390951}
+  - component: {fileID: 1542390954}
   m_Layer: 5
   m_Name: MapSize5
   m_TagString: Untagged
@@ -949,7 +976,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1542390952}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1542390954}
+        m_TargetAssemblyTypeName: MapSizeButton, MyModule
+        m_MethodName: SetBoardSize
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1542390952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -988,6 +1027,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1542390949}
   m_CullTransparentMesh: 1
+--- !u!114 &1542390954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542390949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d779d8f8a9b70794a9357bbb4d5cf97c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 5
 --- !u!1 &1583493141
 GameObject:
   m_ObjectHideFlags: 0
@@ -1106,6 +1158,7 @@ GameObject:
   - component: {fileID: 1918799824}
   - component: {fileID: 1918799823}
   - component: {fileID: 1918799822}
+  - component: {fileID: 1918799825}
   m_Layer: 5
   m_Name: MapSize4
   m_TagString: Untagged
@@ -1176,7 +1229,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1918799823}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1918799825}
+        m_TargetAssemblyTypeName: MapSizeButton, MyModule
+        m_MethodName: SetBoardSize
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1918799823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1215,6 +1280,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1918799820}
   m_CullTransparentMesh: 1
+--- !u!114 &1918799825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918799820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d779d8f8a9b70794a9357bbb4d5cf97c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 4
 --- !u!1 &2022923047
 GameObject:
   m_ObjectHideFlags: 0
