@@ -21,7 +21,7 @@ public class BoardManager : MonoBehaviour{
 
     void InitializeBoard() {
         // Assuming there's an Init script in the scene with mapDimensions.
-        boardSize = FindObjectOfType<Init>().mapDimensions;
+        boardSize = GameSettings.SelectedBoardSize;
         board = new GameObject[boardSize, boardSize];
         int totalTiles = boardSize * boardSize - 1;
         int number = 1;
