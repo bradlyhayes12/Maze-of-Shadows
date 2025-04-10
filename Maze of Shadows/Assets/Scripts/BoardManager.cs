@@ -142,4 +142,15 @@ public class BoardManager : MonoBehaviour{
         foreach (Canvas canvas in GetComponentsInChildren<Canvas>())
             canvas.enabled = false;
     }
+
+    public void QuitGame()
+    {
+        Debug.Log("Quitting Game...");
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
 }
