@@ -51,11 +51,9 @@ public class BoardManager : MonoBehaviour
         return list.GetRange(0, count).ToArray();
     }
 
-    void InitializeBoard()
-    {
-        // If you have an Init script with mapDimensions, use it:
-        boardSize = FindObjectOfType<Init>().mapDimensions;
-
+    void InitializeBoard() {
+        // Assuming there's an Init script in the scene with mapDimensions.
+        boardSize = GameSettings.SelectedBoardSize;
         board = new GameObject[boardSize, boardSize];
 
         int totalTiles = boardSize * boardSize - 1; // e.g. 24 for a 5x5
@@ -176,5 +174,16 @@ public class BoardManager : MonoBehaviour
 
         foreach (Canvas canvas in GetComponentsInChildren<Canvas>())
             canvas.enabled = false;
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Quitting Game...");
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }
