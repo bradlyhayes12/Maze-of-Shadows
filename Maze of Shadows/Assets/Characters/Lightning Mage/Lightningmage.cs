@@ -12,7 +12,7 @@ public class Lightningmage : MonoBehaviour
     private bool isCasting = false;
 
     private int hitCount = 0;
-    private bool isDead = false; 
+    private bool isDead = false;
 
     [Header("Melee Attack")]
     public float attackDuration = 1f; // Length of the melee animation
@@ -110,11 +110,15 @@ public class Lightningmage : MonoBehaviour
             Rigidbody2D rb = lightningbolt.GetComponent<Rigidbody2D>();
             if(rb != null )
             {
-                Vector2 shootDirection = transform.right; // 'right' always points in local +X direction
-                if (transform.localScale.x < 0)
-                    shootDirection = -transform.right; // Flip if facing left
+                float direction = transform.localScale.x > 0 ? 1 : -1;
+                rb.velocity = new Vector2(lightningSpeed * direction, 0);
 
-                rb.velocity = shootDirection * lightningSpeed;
+                if (direction < 0)
+                {
+                    Vector3 lightningScale = lightningbolt.transform.localScale;
+                    lightningScale.x *= -1; // Flip horizontally
+                    lightningbolt.transform.localScale = lightningScale;
+                }
             }
         }
     }

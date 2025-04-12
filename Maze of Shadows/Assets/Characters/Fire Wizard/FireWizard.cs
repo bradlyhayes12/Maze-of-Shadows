@@ -119,6 +119,13 @@ public class FireWizard : MonoBehaviour
             {
                 float direction = transform.localScale.x > 0 ? 1 : -1;
                 rb.velocity = new Vector2(fireballSpeed * direction, 0);
+
+                if (direction < 0)
+                {
+                    Vector3 fireScale = fireball.transform.localScale;
+                    fireScale.x *= -1; // Flip horizontally
+                    fireball.transform.localScale = fireScale;
+                }
             }
         }
     }

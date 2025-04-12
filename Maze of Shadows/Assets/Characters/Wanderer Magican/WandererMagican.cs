@@ -112,6 +112,13 @@ public class WandererMagican : MonoBehaviour
             {
                 float direction = transform.localScale.x > 0 ? 1 : -1;
                 rb.velocity = new Vector2(magicSpeed * direction, 0);
+
+                if (direction < 0)
+                {
+                    Vector3 magicScale = magic.transform.localScale;
+                    magicScale.x *= -1; // Flip horizontally
+                    magic.transform.localScale = magicScale;
+                }
             }
         }
     }
