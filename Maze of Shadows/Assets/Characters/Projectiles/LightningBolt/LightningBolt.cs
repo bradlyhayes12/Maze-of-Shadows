@@ -27,9 +27,9 @@ public class LightningBolt : MonoBehaviour
         //Destroy(gameObject); // Destroy on hit
         WandererMagican magican = other.GetComponent<WandererMagican>();
         if (magican != null) 
-            {
+        {
             magican.TakeHit();
-            }
+        }
         Destroy(gameObject);
 
         FireWizard fireWizard = other.GetComponent<FireWizard>();
