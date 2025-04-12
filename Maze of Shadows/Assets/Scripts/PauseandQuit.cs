@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PauseAndQuit : MonoBehaviour
 {
+    public GameObject pauseMenuUI;
     private bool isPaused = false;
 
     void Update()
@@ -14,19 +15,33 @@ public class PauseAndQuit : MonoBehaviour
             }
             else
             {
-                QuitGame();
+                ResumeGame();
             }
         }
+    }
+
+    void Start()
+    {
+        pauseMenuUI.SetActive(false);
     }
 
     void PauseGame()
     {
         Time.timeScale = 0f; // Freezes the game
         isPaused = true;
+        pauseMenuUI.SetActive(true);
         Debug.Log("Game Paused. Press Escape again to Quit.");
     }
 
-    void QuitGame()
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
+        isPaused = false;
+        pauseMenuUI.SetActive(false);
+        Debug.Log("Game Resumed.");
+    }
+
+    public void QuitGame()
     {
         Debug.Log("Quitting Game...");
 

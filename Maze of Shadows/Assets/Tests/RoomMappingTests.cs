@@ -5,19 +5,16 @@ using System.Collections.Generic;
 public class RoomMappingTests
 {
     [Test]
-    public void Test_If_We_Get_RoomPrefab_For_UD()
+    public void Test_GetRoomPrefabForUD()
     {
-        // 1) Create a new GameObject with PlaySceneManager on it
+        // create a new playscenemanager gameobject
         var go = new GameObject("Test_PlaySceneManager");
         var playSceneManager = go.AddComponent<PlaySceneManager>();
-        
-        // 2) Create a dummy room prefab for testing
-        // In real usage, you'd have an actual prefab from your project.
-        // For unit testing, we'll just make an empty GameObject here.
+
+        // create a dummy room prefab just for testing
         var testRoomPrefab = new GameObject("Room_UD_TestPrefab");
 
-        // 3) Create a test mapping
-        // We'll map "UD" to our test prefab
+        // set up a single mapping: "UD" -> testRoomPrefab
         playSceneManager.roomMappings = new PlaySceneManager.RoomMapping[]
         {
             new PlaySceneManager.RoomMapping
@@ -27,9 +24,7 @@ public class RoomMappingTests
             }
         };
 
-        // 4) Now replicate how PlaySceneManager builds its dictionary
-        //    (Normally, this happens in PlaySceneManager.Start(),
-        //    but here we manually do it for the test.)
+        // mimic how the dictionary is built in PlaySceneManager
         var directionToRoomDict = new Dictionary<string, GameObject>();
         foreach (var mapping in playSceneManager.roomMappings)
         {
@@ -39,13 +34,86 @@ public class RoomMappingTests
             }
         }
 
-        // 5) Check that "UD" exists in the dictionary
+        // check that "UD" is in the dictionary
         Assert.IsTrue(directionToRoomDict.ContainsKey("UD"), 
-            "'UD' direction was not found in the dictionary!");
-        
-        // 6) Verify that we get back the exact prefab we set
+            "'UD' direction was not found in the dictionary");
+
+        // verify it returns the correct prefab
         var returnedPrefab = directionToRoomDict["UD"];
         Assert.AreEqual(testRoomPrefab, returnedPrefab, 
-            "Returned prefab does not match the expected 'testRoomPrefab'!");
+            "returned prefab does not match our testRoomPrefab");
+    }
+
+    [Test]
+    public void Test_GetRoomPrefabForMultipleDirections()
+    {
+        // create a new playscenemanager gameobject
+        var go = new GameObject("Test_PlaySceneManager");
+        var playSceneManager = go.AddComponent<PlaySceneManager>();
+
+        // create dummy prefabs
+        var prefabUD = new GameObject("Room_UD_TestPrefab");
+        var prefabLR = new GameObject("Room_LR_TestPrefab");
+        var prefabDR = new GameObject("Room_DR_TestPrefab");
+
+        // set up multiple mappings
+        playSceneManager.roomMappings = new PlaySceneManager.RoomMapping[]
+        {
+            new PlaySceneManager.RoomMapping { buildTileDirection = "UD", roomPrefab = prefabUD },
+            new PlaySceneManager.RoomMapping { buildTileDirection = "LR", roomPrefab = prefabLR },
+            new PlaySceneManager.RoomMapping { buildTileDirection = "DR", roomPrefab = prefabDR }
+        };
+
+        // build the dictionary
+        var directionToRoomDict = new Dictionary<string, GameObject>();
+        foreach (var mapping in playSceneManager.roomMappings)
+        {
+            if (!directionToRoomDict.ContainsKey(mapping.buildTileDirection))
+            {
+                directionToRoomDict.Add(mapping.buildTileDirection, mapping.roomPrefab);
+            }
+        }
+
+        // make sure ud, lr, dr all exist
+        Assert.IsTrue(directionToRoomDict.ContainsKey("UD"), "dictionary should have 'UD'");
+        Assert.IsTrue(directionToRoomDict.ContainsKey("LR"), "dictionary should have 'LR'");
+        Assert.IsTrue(directionToRoomDict.ContainsKey("DR"), "dictionary should have 'DR'");
+
+        // verify each maps to the correct prefab
+        Assert.AreEqual(prefabUD, directionToRoomDict["UD"], "wrong prefab for 'UD'");
+        Assert.AreEqual(prefabLR, directionToRoomDict["LR"], "wrong prefab for 'LR'");
+        Assert.AreEqual(prefabDR, directionToRoomDict["DR"], "wrong prefab for 'DR'");
+    }
+
+    [Test]
+    public void Test_MissingDirection()
+    {
+        // create a new playscenemanager gameobject
+        var go = new GameObject("Test_PlaySceneManager");
+        var playSceneManager = go.AddComponent<PlaySceneManager>();
+
+        // note we're only mapping "UD" -> some prefab
+        var prefabUD = new GameObject("Room_UD_TestPrefab");
+        playSceneManager.roomMappings = new PlaySceneManager.RoomMapping[]
+        {
+            new PlaySceneManager.RoomMapping { buildTileDirection = "UD", roomPrefab = prefabUD }
+        };
+
+        // build the dictionary
+        var directionToRoomDict = new Dictionary<string, GameObject>();
+        foreach (var mapping in playSceneManager.roomMappings)
+        {
+            if (!directionToRoomDict.ContainsKey(mapping.buildTileDirection))
+            {
+                directionToRoomDict.Add(mapping.buildTileDirection, mapping.roomPrefab);
+            }
+        }
+
+        // confirm that "DR" is not mapped
+        Assert.IsFalse(directionToRoomDict.ContainsKey("DR"),
+            "directionToRoomDict should not contain 'DR'");
+
+        // you can also do: directionToRoomDict.TryGetValue("DR", out var missing) 
+        // but let's keep it simple for this test
     }
 }
