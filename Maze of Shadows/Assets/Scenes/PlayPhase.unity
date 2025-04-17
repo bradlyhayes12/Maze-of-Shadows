@@ -1143,6 +1143,7 @@ MonoBehaviour:
   - buildTileDirection: URDL
     roomPrefab: {fileID: 7888131393970377452, guid: 2e65c93241783e240bd9e4c6b20295c6, type: 3}
   playerSpawnRoom: {fileID: 1681545153798606014, guid: 43bde5486e9ffe544803c1ca5d9b7748, type: 3}
+  borderTilePrefab: {fileID: 1681545153798606014, guid: eb31f8d8dbc18a24a9eee0cef907c2e9, type: 3}
   roomWidth: 17.77157
   roomHeight: 9.66798
   extraGap: 0

@@ -92,7 +92,6 @@ public class RoomMappingTests
         var go = new GameObject("Test_PlaySceneManager");
         var playSceneManager = go.AddComponent<PlaySceneManager>();
 
-        // note we're only mapping "UD" -> some prefab
         var prefabUD = new GameObject("Room_UD_TestPrefab");
         playSceneManager.roomMappings = new PlaySceneManager.RoomMapping[]
         {
@@ -113,7 +112,5 @@ public class RoomMappingTests
         Assert.IsFalse(directionToRoomDict.ContainsKey("DR"),
             "directionToRoomDict should not contain 'DR'");
 
-        // you can also do: directionToRoomDict.TryGetValue("DR", out var missing) 
-        // but let's keep it simple for this test
     }
 }
