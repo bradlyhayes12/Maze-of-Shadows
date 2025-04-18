@@ -1,6 +1,8 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Reflection;
+using System.IO;
 
 public class RoomMappingTests
 {
@@ -112,5 +114,91 @@ public class RoomMappingTests
         Assert.IsFalse(directionToRoomDict.ContainsKey("DR"),
             "directionToRoomDict should not contain 'DR'");
 
+    }
+    private BoardManager BuildBoard(int size)
+    {
+        var go = new GameObject($"BoardManager_{size}");
+        var bm = go.AddComponent<BoardManager>();
+
+        /* -- feed a dummy prefab so GetShuffledTiles() is happy -- */
+        var dummyTile               = new GameObject("DummyTile");
+        dummyTile.AddComponent<TileController>().directionString = string.Empty;
+        bm.tilePrefabs              = new[] { dummyTile };
+
+        /* ---------- tell GameSettings which board size we want ---------- */
+        typeof(GameSettings)                               
+            .GetField("SelectedBoardSize",
+                    BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+            .SetValue(null, size);                 
+
+        /* -------------- now build the board normally -------------------- */
+        typeof(BoardManager)
+            .GetMethod("InitializeBoard", BindingFlags.Instance | BindingFlags.NonPublic)
+            .Invoke(bm, null);
+
+        return bm;
+    }
+    /* ───────────────── 4 × 4 sanity ───────────────── */
+    [Test]
+    public void Board4x4_HasCorrectDimensionsAndOneSpawn()
+    {
+        var bm = BuildBoard(4);
+
+        Assert.IsNotNull(bm.board);
+        Assert.AreEqual(4, bm.board.GetLength(0));
+        Assert.AreEqual(4, bm.board.GetLength(1));
+
+        int empty = 0;
+        foreach (var cell in bm.board) if (cell == null) empty++;
+        Assert.AreEqual(1, empty, "Expected exactly one empty spawn cell on 4×4 board");
+    }
+
+    /* ───────────────── 5 × 5 sanity ───────────────── */
+    [Test]
+    public void Board5x5_HasCorrectDimensionsAndOneSpawn()
+    {
+        var bm = BuildBoard(5);
+
+        Assert.AreEqual(5, bm.board.GetLength(0));
+        Assert.AreEqual(5, bm.board.GetLength(1));
+
+        int empty = 0;
+        foreach (var cell in bm.board) if (cell == null) empty++;
+        Assert.AreEqual(1, empty, "Expected exactly one empty spawn cell on 5×5 board");
+    }
+
+    /* ───────────── Edge‑door check on 5 × 5 ───────────── */
+    [Test]
+    public void Board5x5_EdgeTilesHaveNoOutwardDoors()
+    {
+        var bm = BuildBoard(5);
+        int n  = bm.boardSize;
+
+        for (int x = 0; x < n; x++)
+        {
+            // skip if this edge tile is the empty spawn
+            if (bm.board[x, n - 1] != null)
+                Assert.IsFalse(bm.board[x, n - 1]
+                            .GetComponent<TileController>().directionString.Contains("U"),
+                            $"Top edge tile ({x},{n-1}) has an up‑facing door");
+
+            if (bm.board[x, 0] != null)
+                Assert.IsFalse(bm.board[x, 0]
+                            .GetComponent<TileController>().directionString.Contains("D"),
+                            $"Bottom edge tile ({x},0) has a down‑facing door");
+        }
+
+        for (int y = 0; y < n; y++)
+        {
+            if (bm.board[0, y] != null)
+                Assert.IsFalse(bm.board[0, y]
+                            .GetComponent<TileController>().directionString.Contains("L"),
+                            $"Left edge tile (0,{y}) has a left‑facing door");
+
+            if (bm.board[n - 1, y] != null)
+                Assert.IsFalse(bm.board[n - 1, y]
+                            .GetComponent<TileController>().directionString.Contains("R"),
+                            $"Right edge tile ({n-1},{y}) has a right‑facing door");
+        }
     }
 }
