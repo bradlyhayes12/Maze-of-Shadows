@@ -151,20 +151,26 @@ public class BoardManager : MonoBehaviour
     }
 
     private void HideVisualsAndDisableInteraction()
-    {
-        Renderer mainRenderer = GetComponent<Renderer>();
-        if (mainRenderer != null)
-            mainRenderer.enabled = false;
+{
+    // turn off anything that draws
+    foreach (Renderer r in GetComponentsInChildren<Renderer>(true))
+        r.enabled = false;
 
-        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
-            renderer.enabled = false;
+    // nuke ALL colliders (3‑D *and* 2‑D)
+    foreach (Collider c in GetComponentsInChildren<Collider>(true))
+        c.enabled = false;
 
-        foreach (Collider collider in GetComponentsInChildren<Collider>())
-            collider.enabled = false;
+    foreach (Collider2D c2d in GetComponentsInChildren<Collider2D>(true))
+        c2d.enabled = false;          // ← NEW line
 
-        foreach (Canvas canvas in GetComponentsInChildren<Canvas>())
-            canvas.enabled = false;
-    }
+    // make the canvases disappear too
+    foreach (Canvas canvas in GetComponentsInChildren<Canvas>(true))
+        canvas.enabled = false;
+
+    // optional: freeze the puzzle scripts so nothing runs in Play phase
+    foreach (TileController t in GetComponentsInChildren<TileController>(true))
+        t.enabled = false;
+}
 
     public void QuitGame()
     {
