@@ -11,6 +11,7 @@ public class WandererMagican : MonoBehaviour
     private bool isAttacking = false;
     private bool isCasting = false;
 
+    [Header("Health")]
     private int hitCount = 0;
     private bool isDead = false;
 
