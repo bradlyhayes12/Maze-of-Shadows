@@ -52,11 +52,14 @@ public class FireWizard : MonoBehaviour
     {
         isAttacking = true;
 
+
         if (movementScript != null)
             movementScript.enabled = false;
 
         if (animator != null)
             animator.SetBool("isMoving", false);
+
+        swordHitbox.EnableHitbox(); 
 
         if (swordHitbox != null)
             swordHitbox.EnableHitbox();
