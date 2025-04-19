@@ -12,6 +12,8 @@ public class WandererMagican : MonoBehaviour, IDamageable
     private bool isCasting = false;
 
     [Header("Health")]
+    public int Health = 5;
+
     private int hitCount = 0;
     private bool isDead = false;
 
@@ -131,7 +133,7 @@ public class WandererMagican : MonoBehaviour, IDamageable
         hitCount++;
         Debug.Log("The magician hit! Current hits: " + hitCount);
 
-        if (hitCount >= 3)
+        if (hitCount >= Health)
         {
             Die();
         }

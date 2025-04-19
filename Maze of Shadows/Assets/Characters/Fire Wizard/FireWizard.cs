@@ -11,6 +11,9 @@ public class FireWizard : MonoBehaviour, IDamageable
     private int hitCount = 0;
     private bool isDead = false;
 
+    [Header("Health Settings")]
+    public int Health = 5;
+
     [Header("Fireball Attack")]
     public float fireballBurstTime = 1f;
     public float fireballCooldown = 5f;
@@ -138,7 +141,7 @@ public class FireWizard : MonoBehaviour, IDamageable
         hitCount++;
         Debug.Log("Fire Wizartd hit! Current hits: " + hitCount);
 
-        if (hitCount >= 3)
+        if (hitCount >= Health)
         {
             Die();
         }
