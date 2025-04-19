@@ -57,9 +57,7 @@ public class FireWizard : MonoBehaviour
             movementScript.enabled = false;
 
         if (animator != null)
-            animator.SetBool("isMoving", false);
-
-        swordHitbox.EnableHitbox(); 
+            animator.SetBool("isMoving", false); 
 
         if (swordHitbox != null)
             swordHitbox.EnableHitbox();

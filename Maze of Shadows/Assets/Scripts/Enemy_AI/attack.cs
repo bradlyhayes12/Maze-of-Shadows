@@ -59,5 +59,6 @@ public class EnemyAttack : MonoBehaviour {
                 damageAppliedThisAttack = true; // Prevent multiple hits in one attack cycle
             }
         }
+         //only during the active attack window, only once per swing
     }
 }
