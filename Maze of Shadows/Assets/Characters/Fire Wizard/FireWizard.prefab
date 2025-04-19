@@ -302,7 +302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireballBurstTime: 0.5
   fireballCooldown: 2
-  fireballPrefab: {fileID: 7950585100310351702, guid: 3fe2cb9a42d3c4b45a3637cb02cb87fa, type: 3}
+  fireballPrefab: {fileID: 3406064410301751459, guid: b24bfc0617cf4d643a07eba0fae2cbff, type: 3}
   firePoint: {fileID: 2139399030029522999}
   fireballSpeed: 2
   attackDuration: 1

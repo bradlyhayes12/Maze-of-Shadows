@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireWizard : MonoBehaviour
+public class FireWizard : MonoBehaviour, IDamageable
 {
     private SpriteRenderer spriteRenderer;
     private Animator animator;
@@ -144,6 +144,7 @@ public class FireWizard : MonoBehaviour
         }
         else
         {
+            Debug.Log("TakeHit() called, triggering Hurt");
             animator.SetTrigger("Hurt");
         }
     }

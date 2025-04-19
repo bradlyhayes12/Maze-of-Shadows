@@ -201,7 +201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackDuration: 1
   attackCoolDown: 2
-  magicPrefab: {fileID: 7403154019526277017, guid: 96a9184a131ced745a41ea1fc7c81d6c, type: 3}
+  magicPrefab: {fileID: 3358180033129567003, guid: 92abdf54fbaadf6438fc0038b036abe9, type: 3}
   magicPoint: {fileID: 6286164561420299568}
   magicSpeed: 1
   magicCastDuration: 1.5

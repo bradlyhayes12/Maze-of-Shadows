@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lightningmage : MonoBehaviour
+public class Lightningmage : MonoBehaviour, IDamageable
 {
     private SpriteRenderer spriteRenderer;
     private Animator animator;

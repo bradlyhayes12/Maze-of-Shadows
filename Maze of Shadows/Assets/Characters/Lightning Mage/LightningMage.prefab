@@ -199,7 +199,7 @@ MonoBehaviour:
   attackCoolDown: 2
   lightningCastDuration: 1
   lightningCoolDown: 4
-  LightningBoltPrefab: {fileID: 2490795590131927205, guid: d36ce827cbe15764e87b3315ea41265d, type: 3}
+  LightningBoltPrefab: {fileID: 4731639660512323381, guid: 2d023759f9ee5fa498a688384952fa66, type: 3}
   lightningPoint: {fileID: 6847064786158545137}
   lightningSpeed: 2
   swordHitbox: {fileID: 7324057300242849754}

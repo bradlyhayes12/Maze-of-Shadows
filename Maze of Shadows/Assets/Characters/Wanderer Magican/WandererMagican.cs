@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WandererMagican : MonoBehaviour
+public class WandererMagican : MonoBehaviour, IDamageable
 {
     private SpriteRenderer spriteRenderer;
     private Animator animator;
