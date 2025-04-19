@@ -8,103 +8,109 @@ public class PlaySceneManager : MonoBehaviour
     [System.Serializable]
     public struct RoomMapping
     {
-        public string buildTileDirection;  // e.g. "DR"
-        public GameObject roomPrefab;      // e.g. Room_DR
+        public string buildTileDirection;
+        public GameObject roomPrefab;
     }
 
+    /* ────────── Inspector Fields ────────── */
     [Header("Room Tile Setup")]
     public RoomMapping[] roomMappings;
-    [SerializeField] private GameObject PlayerSpawnRoom;
+    [SerializeField] private GameObject playerSpawnRoom;
+    
+    [Header("Border Tile")]
+    [SerializeField] private GameObject borderTilePrefab;   // ← NEW
 
     [SerializeField] private float roomWidth  = 17.77157f;
-    [SerializeField] private float roomHeight = 9.66798f;
+    [SerializeField] private float roomHeight =  9.66798f;
     [SerializeField] private float extraGap   = 0f;
 
+    /* ────────── Internals ────────── */
     private BoardManager boardManager;
-    private Dictionary<string, GameObject> directionToRoomDict;
+    private Dictionary<string, GameObject> dir2Room;
 
+    /* ────────── Life‑cycle ────────── */
     void Start()
     {
-        // Build the dictionary for quick lookups
-        directionToRoomDict = new Dictionary<string, GameObject>();
-        foreach (RoomMapping mapping in roomMappings)
-        {
-            if (!directionToRoomDict.ContainsKey(mapping.buildTileDirection))
-            {
-                directionToRoomDict.Add(mapping.buildTileDirection, mapping.roomPrefab);
-            }
-            else
-            {
-                Debug.LogWarning($"Duplicate direction key found: {mapping.buildTileDirection}. " +
-                                 "Make sure each direction is unique!");
-            }
-        }
+        dir2Room = new Dictionary<string, GameObject>();
+        foreach (var m in roomMappings)
+            if (!dir2Room.ContainsKey(m.buildTileDirection))
+                dir2Room[m.buildTileDirection] = m.roomPrefab;
 
-        // Find the BoardManager from the Build phase
         boardManager = FindObjectOfType<BoardManager>();
-        if (boardManager == null)
-        {
-            Debug.LogError("No BoardManager found in PlayScene!");
-            return;
-        }
+        if (boardManager == null) { Debug.LogError("BoardManager missing"); return; }
 
         StartCoroutine(WaitForActiveSceneAndSpawn());
     }
 
-    private IEnumerator WaitForActiveSceneAndSpawn()
+    IEnumerator WaitForActiveSceneAndSpawn()
     {
         while (SceneManager.GetActiveScene().name != "PlayPhase")
-        {
             yield return null;
-        }
 
-        Debug.Log("PlayPhase is active! Spawning RoomTiles.");
         SpawnRoomTiles();
     }
 
-    private void SpawnRoomTiles()
+    /* ────────── Generation ────────── */
+    void SpawnRoomTiles()
     {
-        GameObject[,] originalBoard = boardManager.board;
-        int boardSize = boardManager.boardSize;
+        var board      = boardManager.board;
+        int size       = boardManager.boardSize;
+        var cellSize   = new Vector3(roomWidth + extraGap, roomHeight + extraGap, 0f);
+        var offset     = new Vector3((size - 1) * cellSize.x * 0.5f,
+                                     (size - 1) * cellSize.y * 0.5f,
+                                     0f);
 
-        Vector3 bigBoardOffset = new Vector3(
-            (boardSize - 1) * roomWidth / 2f,
-            (boardSize - 1) * roomHeight / 2f,
-            0f
-        );
+        Vector3 spawnRoomPos = Vector3.zero;
 
-        for (int y = 0; y < boardSize; y++)
+        // 1) Lay down the maze itself
+        for (int y = 0; y < size; y++)
+        for (int x = 0; x < size; x++)
         {
-            for (int x = 0; x < boardSize; x++)
+            var pos = new Vector3(x * cellSize.x, y * cellSize.y, 0f) - offset;
+
+            var buildTileObj = board[x, y];
+            if (buildTileObj)                                       // occupied
             {
-                Vector3 spawnPos = new Vector3(
-                    x * (roomWidth + extraGap),
-                    y * (roomHeight + extraGap),
-                    0f
-                ) - bigBoardOffset;
-
-                GameObject buildTileObj = originalBoard[x, y];
-                if (buildTileObj != null)
-                {
-                    TileController tileCtrl = buildTileObj.GetComponent<TileController>();
-                    string direction = tileCtrl.directionString; // e.g. "DR"
-                    Debug.Log($"Spawning tile at {x},{y} with direction = '{direction}'.");
-
-                    if (directionToRoomDict.TryGetValue(direction, out GameObject roomPrefab))
-                    {
-                        Instantiate(roomPrefab, spawnPos, Quaternion.identity);
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"No room prefab mapping found for direction '{direction}'");
-                    }
-                }
-                else
-                {
-                    // Empty cell becomes the PlayerSpawnRoom
-                    Instantiate(PlayerSpawnRoom, spawnPos, Quaternion.identity);
-                }
+                var dir = buildTileObj.GetComponent<TileController>().directionString;
+                if (dir2Room.TryGetValue(dir, out var prefab))
+                    Instantiate(prefab, pos, Quaternion.identity);
+            }
+            else                                                    // player start
+            {
+                Instantiate(playerSpawnRoom, pos, Quaternion.identity);
+                spawnRoomPos = pos;
             }
         }
+
+        // 2) Ring the maze with border tiles  ❏❏❏❏❏
+        SpawnBorderRing(size, cellSize, offset);
+
+        // 3) Center the camera on the player’s spawn
+        CenterCameraOn(spawnRoomPos);
+    }
+
+    void SpawnBorderRing(int size, Vector3 cellSize, Vector3 offset)
+    {
+        if (borderTilePrefab == null) { Debug.LogWarning("BorderTile prefab not assigned."); return; }
+
+        for (int y = -1; y <= size; y++)
+        for (int x = -1; x <= size; x++)
+        {
+            bool isBorderCell = (x == -1 || x == size || y == -1 || y == size);
+            if (!isBorderCell) continue;
+
+            var pos = new Vector3(x * cellSize.x, y * cellSize.y, 0f) - offset;
+            Instantiate(borderTilePrefab, pos, Quaternion.identity);
+        }
+    }
+
+    /* ────────── Helpers ────────── */
+    void CenterCameraOn(Vector3 target)
+    {
+        var cam = Camera.main;
+        if (cam != null)
+            cam.transform.position = new Vector3(target.x, target.y, cam.transform.position.z);
+        else
+            Debug.LogWarning("Main Camera not found.");
     }
 }
