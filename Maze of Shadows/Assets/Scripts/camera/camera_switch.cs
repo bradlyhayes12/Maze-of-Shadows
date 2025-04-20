@@ -3,7 +3,9 @@ using UnityEngine;
 public class CameraTriggerZone : MonoBehaviour
 {
     public Camera targetCamera;
-    public Camera[] allCameras;
+    public bool ignoreFirstTrigger = false;
+
+    private bool hasTriggeredOnce = false;
 
     void Start()
     {
@@ -20,23 +22,43 @@ public class CameraTriggerZone : MonoBehaviour
             return;
         }
 
-        Debug.Log(">>> Triggered by PLAYER. Switching camera to: " + targetCamera.name);
+        if (ignoreFirstTrigger && !hasTriggeredOnce)
+        {
+            hasTriggeredOnce = true;
+            Debug.Log("🟡 Ignored first trigger (spawn room)");
+            return;
+        }
 
+        Debug.Log(">>> Triggered by PLAYER. Switching camera to: " + targetCamera?.name);
+
+        //Find all active cameras at runtime
+        Camera[] allCameras = Camera.allCameras;
+
+        Debug.Log("Found " + allCameras.Length + " active cameras at runtime:");
+        foreach (Camera cam in allCameras)
+        {
+            Debug.Log($" - Camera: {cam.name}, Enabled: {cam.enabled}, Position: {cam.transform.position}");
+        }
+
+        // Disable all cameras
         foreach (Camera cam in allCameras)
         {
             if (cam != null)
             {
-                cam.enabled = false; // Turn off the Camera component
-                cam.clearFlags = CameraClearFlags.SolidColor; // Prevent ghost frames
+                cam.enabled = false;
+                cam.clearFlags = CameraClearFlags.SolidColor;
                 Debug.Log("Disabled camera: " + cam.name);
             }
         }
 
+        //Enable the target camera
         if (targetCamera != null)
         {
             targetCamera.clearFlags = CameraClearFlags.SolidColor;
-            targetCamera.enabled = true; // Turn on only the target camera
-            Debug.Log("Activated camera: " + targetCamera.name);
+            targetCamera.enabled = true;
+            Debug.Log("✅ Activated camera: " + targetCamera.name);
         }
+
+        hasTriggeredOnce = true;
     }
 }
