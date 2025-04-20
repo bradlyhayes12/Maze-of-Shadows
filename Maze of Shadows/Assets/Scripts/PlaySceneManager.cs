@@ -77,17 +77,77 @@ public class PlaySceneManager : MonoBehaviour
             }
             else                                                    // player start
             {
-                Instantiate(playerSpawnRoom, pos, Quaternion.identity);
+                var spawnedRoom = Instantiate(playerSpawnRoom, pos, Quaternion.identity);
                 spawnRoomPos = pos;
+
+                // 🔍 Try to find a Camera inside the spawned room prefab
+                //Camera roomCam = spawnedRoom.GetComponentInChildren<Camera>();
+
+                // if (roomCam != null)
+                // {
+                //     // Disable all other cameras
+                //     foreach (Camera cam in Camera.allCameras)
+                //     {
+                //         if (cam != roomCam)
+                //         {
+                //             cam.enabled = false;
+                //             Debug.Log("❌ Disabled camera: " + cam.name);
+                //         }
+                //     }
+
+                //     // Enable the spawn room camera
+                //     roomCam.enabled = true;
+                //     Debug.Log("✅ Activated spawn room camera: " + roomCam.name);
+                // }
+                // else
+                // {
+                //     Debug.LogWarning("⚠️ No camera found inside player spawn room prefab.");
+                // }
+
+                            }
+                        }
+
+                        // 2) Ring the maze with border tiles  ❏❏❏❏❏
+                        SpawnBorderRing(size, cellSize, offset);
+
+                        // 3) Center the camera on the player’s spawn
+                        CenterCameraOn(spawnRoomPos);
+                        Camera mainCam = Camera.main;
+                        if (mainCam != null)
+                        {
+                            var zoomScript = mainCam.GetComponent<CameraZoomIn>();
+                            if (zoomScript != null)
+                            {
+                                zoomScript.StartZoom(spawnRoomPos);
+                                Debug.Log(" Started cinematic zoom into spawn room.");
+                            }
+                            else
+                            {
+                                Debug.LogWarning("Main Camera is missing CameraZoomIn script.");
+                            }
+                        }
+                        
+                    }
+    //dont need anymore
+    void DisableAllExceptMainCamera()
+    {
+        Camera[] allCams = Camera.allCameras;
+        Camera mainCam = Camera.main;
+
+        Debug.Log("Disabling extra cameras...");
+
+        foreach (Camera cam in allCams)
+        {
+            if (cam != null)
+            {
+                bool shouldBeEnabled = cam == mainCam;
+                cam.enabled = shouldBeEnabled;
+
+                Debug.Log((shouldBeEnabled ? " Keeping" : " Disabling") + $" camera: {cam.name} (Position: {cam.transform.position})");
             }
         }
-
-        // 2) Ring the maze with border tiles  ❏❏❏❏❏
-        SpawnBorderRing(size, cellSize, offset);
-
-        // 3) Center the camera on the player’s spawn
-        CenterCameraOn(spawnRoomPos);
     }
+
 
     void SpawnBorderRing(int size, Vector3 cellSize, Vector3 offset)
     {
