@@ -29,12 +29,12 @@ public class PlayPhaseManager : MonoBehaviour
 
         foreach (var ro in rooms)
         {
-            var bc = ro.GetComponent<BoxCollider2D>();
+            var bc = ro.GetComponent<Collider2D>();
             SpawnAllCoins(bc);
         }
     }
 
-    void SpawnAllCoins(BoxCollider2D bc)
+    void SpawnAllCoins(Collider2D bc)
     {
         Vector2 center = bc.bounds.center;
     }
@@ -54,6 +54,14 @@ public class PlayPhaseManager : MonoBehaviour
     void EndGame()
     {
         Debug.Log("All coins collected! Game Over!");
+
+#if UNITY_EDITOR
+        // Stop play mode in the Unity Editor
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        // Quit the application
+        Application.Quit();
+#endif
         // e.g. SceneManager.LoadScene("WinScene");
         // or show a UI panel, freeze input, etc.
     }

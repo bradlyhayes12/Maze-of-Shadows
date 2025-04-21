@@ -27,4 +27,11 @@ public class Coin : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    void Awake()
+    {
+        var sr = GetComponent<SpriteRenderer>();
+        sr.sortingLayerName = "Default";
+        sr.sortingOrder = 5;
+    }
 }

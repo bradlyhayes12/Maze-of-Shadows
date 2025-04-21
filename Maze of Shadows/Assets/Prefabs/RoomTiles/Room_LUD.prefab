@@ -3455,6 +3455,7 @@ GameObject:
   - component: {fileID: 9025259083790866978}
   - component: {fileID: 4609674173273048492}
   - component: {fileID: 8330970255388493169}
+  - component: {fileID: 6078912311927204283}
   m_Layer: 0
   m_Name: Room_LUD
   m_TagString: Untagged
@@ -3549,6 +3550,20 @@ MonoBehaviour:
   roomNumberText: {fileID: 7263012466772506962}
   whiteBG: {fileID: 4640970886958856704}
   canvas: {fileID: 3538088193298338582}
+--- !u!114 &6078912311927204283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7888131393970377452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8812b671e18815543a90a4af5c7ccd58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinPrefab: {fileID: 471741339654729964, guid: bf1f68669140823448cf796392c90afb, type: 3}
+  coinsToSpawn: 2
 --- !u!1 &8910694544534109157
 GameObject:
   m_ObjectHideFlags: 0
