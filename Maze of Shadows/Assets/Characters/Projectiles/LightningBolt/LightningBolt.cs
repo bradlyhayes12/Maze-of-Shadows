@@ -32,10 +32,11 @@ public class LightningBolt : MonoBehaviour
         }
         Destroy(gameObject);
 
-        FireWizard fireWizard = other.GetComponent<FireWizard>();
-        if(fireWizard != null)
+        // this will find *any* component on the Player that implements IDamageable
+        var dmgReceiver = other.GetComponent<IDamageable>();
+        if (dmgReceiver != null)
         {
-            fireWizard.TakeHit();
+            dmgReceiver.TakeHit();
         }
         Destroy(gameObject);
     }

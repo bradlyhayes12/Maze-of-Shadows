@@ -269,14 +269,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7638777949018067405}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -287,7 +287,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &4067418052371683623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,9 +300,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 271b043bca0c5c8459d4d3ac4ee9c071, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Health: 5
   fireballBurstTime: 0.5
   fireballCooldown: 2
-  fireballPrefab: {fileID: 7950585100310351702, guid: 3fe2cb9a42d3c4b45a3637cb02cb87fa, type: 3}
+  fireballPrefab: {fileID: 3406064410301751459, guid: b24bfc0617cf4d643a07eba0fae2cbff, type: 3}
   firePoint: {fileID: 2139399030029522999}
   fireballSpeed: 2
   attackDuration: 1

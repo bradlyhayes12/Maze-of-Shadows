@@ -16,16 +16,17 @@ public class Magic : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (!hasHit)
+        if (!other.CompareTag("Player")) return;
+
+        // this will find *any* component on the Player that implements IDamageable
+        var dmgReceiver = other.GetComponent<IDamageable>();
+        if (dmgReceiver != null)
         {
-            hasHit = true;
-            GetComponent<Collider2D>().enabled = false;
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            dmgReceiver.TakeHit();
         }
-        //// Add hit logic (like damage, explosion, etc.)
-        //Debug.Log("Fireball hit: " + other.name); 
-        //Destroy(gameObject); // Destroy on hit
+        Destroy(gameObject);
     }
+
 
     public void DestroySelf(AnimationEvent evt = null)
     {

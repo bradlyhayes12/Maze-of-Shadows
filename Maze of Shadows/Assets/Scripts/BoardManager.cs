@@ -7,11 +7,11 @@ using UnityEngine.SceneManagement;
 public class BoardManager : MonoBehaviour
 {
     [Header("Tile Prefabs")]
-    public GameObject[] tilePrefabs; // Should contain your 11 tile prefabs
+    public GameObject[] tilePrefabs;          // 11 prefabs
 
     [Header("Board Settings")]
-    public int boardSize;          // e.g. 5 for a 5x5 board
-    public float tileSize = 1.0f;
+    public int boardSize;                     // 3, 4, or 5 only
+    public float tileSize = 1f;
 
     [HideInInspector] public GameObject[,] board;
     [HideInInspector] public Vector2Int emptySpot;
@@ -20,66 +20,60 @@ public class BoardManager : MonoBehaviour
     private Vector3 boardOffset;
     private ViewManagerScript viewManagerScript;
 
-    void Start()
+    /* ---------------------------  NEW  ---------------------------------- */
+    /// <summary>
+    /// Returns a shuffled list of exactly <paramref name="count"/> tiles,
+    /// repeating prefabs as many times as necessary.
+    /// </summary>
+    private List<GameObject> GetShuffledTiles(int count)
     {
-        InitializeBoard();
-    }
+        // Repeat the whole prefab set until we have enough
+        List<GameObject> tiles = new List<GameObject>(count);
+        while (tiles.Count < count)
+            tiles.AddRange(tilePrefabs);
 
-    private GameObject[] ChooseRandomTiles(GameObject[] pool, int count)
-    {
-        if (pool.Length < count)
-        {
-            Debug.LogWarning("Not enough tile prefabs to fulfill unique selection. " +
-                             $"Pool size: {pool.Length}, requested: {count}");
-            count = pool.Length;
-        }
+        // Trim any extras
+        tiles.RemoveRange(count, tiles.Count - count);
 
-        List<GameObject> list = new List<GameObject>(pool);
-
-        // Fisher-Yates shuffle
+        // Fisher‑Yates shuffle
         System.Random rng = new System.Random();
-        int n = list.Count;
-        while (n > 1)
+        for (int n = tiles.Count - 1; n > 0; n--)
         {
-            n--;
             int k = rng.Next(n + 1);
-            GameObject temp = list[k];
-            list[k] = list[n];
-            list[n] = temp;
+            (tiles[n], tiles[k]) = (tiles[k], tiles[n]);
         }
-
-        return list.GetRange(0, count).ToArray();
+        return tiles;
     }
+    /* -------------------------------------------------------------------- */
 
-    void InitializeBoard() {
-        // Assuming there's an Init script in the scene with mapDimensions.
-        boardSize = GameSettings.SelectedBoardSize;
+    void Start() => InitializeBoard();
+
+    void InitializeBoard()
+    {
+        // 1. Make sure board size is legit
+        boardSize = Mathf.Clamp(GameSettings.SelectedBoardSize, 3, 5);
+
         board = new GameObject[boardSize, boardSize];
+        int totalTiles = boardSize * boardSize - 1;   // leave 1 empty
 
-        int totalTiles = boardSize * boardSize - 1; // e.g. 24 for a 5x5
-
-        // Randomly choose 'totalTiles' from tilePrefabs (or fewer if not enough)
-        GameObject[] chosenTiles = ChooseRandomTiles(tilePrefabs, totalTiles);
+        /* 2. Grab exactly what we need, duplicates allowed */
+        List<GameObject> tiles = GetShuffledTiles(totalTiles);
 
         int tileIndex = 0;
-        int number = 1;
 
-        // Offset so board is centered at (0,0)
-        boardOffset = new Vector3(
-            (boardSize - 1) * tileSize / 2,
-            (boardSize - 1) * tileSize / 2,
-            0f
-        );
+        // 3. Center the board
+        boardOffset = new Vector3((boardSize - 1) * tileSize * 0.5f,
+                                  (boardSize - 1) * tileSize * 0.5f,
+                                   0f);
 
         for (int y = 0; y < boardSize; y++)
         {
             for (int x = 0; x < boardSize; x++)
             {
-                if (number <= totalTiles)
+                if (x + y * boardSize < totalTiles)       // still need tiles
                 {
-                    Vector3 spawnPos = new Vector3(x * tileSize, y * tileSize, 0f) - boardOffset;
-
-                    GameObject tileObj = Instantiate(chosenTiles[tileIndex], spawnPos, Quaternion.identity, transform);
+                    Vector3 pos = new Vector3(x * tileSize, y * tileSize, 0) - boardOffset;
+                    GameObject tileObj = Instantiate(tiles[tileIndex++], pos, Quaternion.identity, transform);
 
                     TileController tile = tileObj.GetComponent<TileController>();
                     tile.boardManager = this;
@@ -87,13 +81,9 @@ public class BoardManager : MonoBehaviour
                     tile.y = y;
 
                     board[x, y] = tileObj;
-
-                    tileIndex++;
-                    number++;
                 }
-                else
+                else                                      // last slot = empty
                 {
-                    // This is the empty cell
                     board[x, y] = null;
                     emptySpot = new Vector2Int(x, y);
                 }
@@ -161,20 +151,26 @@ public class BoardManager : MonoBehaviour
     }
 
     private void HideVisualsAndDisableInteraction()
-    {
-        Renderer mainRenderer = GetComponent<Renderer>();
-        if (mainRenderer != null)
-            mainRenderer.enabled = false;
+{
+    // turn off anything that draws
+    foreach (Renderer r in GetComponentsInChildren<Renderer>(true))
+        r.enabled = false;
 
-        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
-            renderer.enabled = false;
+    // nuke ALL colliders (3‑D *and* 2‑D)
+    foreach (Collider c in GetComponentsInChildren<Collider>(true))
+        c.enabled = false;
 
-        foreach (Collider collider in GetComponentsInChildren<Collider>())
-            collider.enabled = false;
+    foreach (Collider2D c2d in GetComponentsInChildren<Collider2D>(true))
+        c2d.enabled = false;          // ← NEW line
 
-        foreach (Canvas canvas in GetComponentsInChildren<Canvas>())
-            canvas.enabled = false;
-    }
+    // make the canvases disappear too
+    foreach (Canvas canvas in GetComponentsInChildren<Canvas>(true))
+        canvas.enabled = false;
+
+    // optional: freeze the puzzle scripts so nothing runs in Play phase
+    foreach (TileController t in GetComponentsInChildren<TileController>(true))
+        t.enabled = false;
+}
 
     public void QuitGame()
     {

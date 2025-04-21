@@ -151,14 +151,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7433940311471029665}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -195,11 +195,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc64be40c92cf6a4f9ea55aa2919ec34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Health: 5
   attackDuration: 1
   attackCoolDown: 2
   lightningCastDuration: 1
   lightningCoolDown: 4
-  LightningBoltPrefab: {fileID: 2490795590131927205, guid: d36ce827cbe15764e87b3315ea41265d, type: 3}
+  LightningBoltPrefab: {fileID: 4731639660512323381, guid: 2d023759f9ee5fa498a688384952fa66, type: 3}
   lightningPoint: {fileID: 6847064786158545137}
   lightningSpeed: 2
   swordHitbox: {fileID: 7324057300242849754}

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lightningmage : MonoBehaviour
+public class Lightningmage : MonoBehaviour, IDamageable
 {
     private SpriteRenderer spriteRenderer;
     private Animator animator;
@@ -13,6 +13,9 @@ public class Lightningmage : MonoBehaviour
 
     private int hitCount = 0;
     private bool isDead = false;
+
+    [Header("Health Settings")]
+    public int Health = 5;
 
     [Header("Melee Attack")]
     public float attackDuration = 1f; // Length of the melee animation
@@ -107,6 +110,13 @@ public class Lightningmage : MonoBehaviour
         {
             GameObject lightningbolt = Instantiate(LightningBoltPrefab, lightningPoint.position, Quaternion.identity);
 
+            var sr = lightningbolt.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                sr.sortingLayerName = "Projectiles";
+                sr.sortingOrder = 500;
+            }
+
             Rigidbody2D rb = lightningbolt.GetComponent<Rigidbody2D>();
             if(rb != null )
             {
@@ -130,7 +140,7 @@ public class Lightningmage : MonoBehaviour
         hitCount++;
         Debug.Log("Lightning Mage hit! Current hits: " + hitCount);
 
-        if (hitCount >= 3)
+        if (hitCount >= Health)
         {
             Die();
         }

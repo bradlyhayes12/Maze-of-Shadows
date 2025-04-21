@@ -682,6 +682,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1133740980}
   - component: {fileID: 1133740979}
+  - component: {fileID: 1133740981}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -724,7 +725,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 146.50647
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -755,6 +756,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1133740981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133740977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d3225ec9fefc344491194f2c369ed6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetPosition: {x: 0, y: 0, z: 0}
+  targetSize: 15
+  moveSpeed: 5
+  zoomSpeed: 5
 --- !u!1 &1222585540
 GameObject:
   m_ObjectHideFlags: 0
@@ -1142,7 +1159,8 @@ MonoBehaviour:
     roomPrefab: {fileID: 7888131393970377452, guid: 0baef1d2dc67f3d4e9b05cbec3269652, type: 3}
   - buildTileDirection: URDL
     roomPrefab: {fileID: 7888131393970377452, guid: 2e65c93241783e240bd9e4c6b20295c6, type: 3}
-  PlayerSpawnRoom: {fileID: 1681545153798606014, guid: 43bde5486e9ffe544803c1ca5d9b7748, type: 3}
+  playerSpawnRoom: {fileID: 1681545153798606014, guid: 43bde5486e9ffe544803c1ca5d9b7748, type: 3}
+  borderTilePrefab: {fileID: 1681545153798606014, guid: eb31f8d8dbc18a24a9eee0cef907c2e9, type: 3}
   roomWidth: 17.77157
   roomHeight: 9.66798
   extraGap: 0

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireWizard : MonoBehaviour
+public class FireWizard : MonoBehaviour, IDamageable
 {
     private SpriteRenderer spriteRenderer;
     private Animator animator;
@@ -10,6 +10,9 @@ public class FireWizard : MonoBehaviour
 
     private int hitCount = 0;
     private bool isDead = false;
+
+    [Header("Health Settings")]
+    public int Health = 5;
 
     [Header("Fireball Attack")]
     public float fireballBurstTime = 1f;
@@ -52,11 +55,12 @@ public class FireWizard : MonoBehaviour
     {
         isAttacking = true;
 
+
         if (movementScript != null)
             movementScript.enabled = false;
 
         if (animator != null)
-            animator.SetBool("isMoving", false);
+            animator.SetBool("isMoving", false); 
 
         if (swordHitbox != null)
             swordHitbox.EnableHitbox();
@@ -114,6 +118,13 @@ public class FireWizard : MonoBehaviour
         {
             GameObject fireball = Instantiate(fireballPrefab, firePoint.position, Quaternion.identity);
 
+            var sr = fireball.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                sr.sortingLayerName = "Projectiles";
+                sr.sortingOrder = 500;
+            }
+
             Rigidbody2D rb = fireball.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
@@ -137,12 +148,13 @@ public class FireWizard : MonoBehaviour
         hitCount++;
         Debug.Log("Fire Wizartd hit! Current hits: " + hitCount);
 
-        if (hitCount >= 3)
+        if (hitCount >= Health)
         {
             Die();
         }
         else
         {
+            Debug.Log("TakeHit() called, triggering Hurt");
             animator.SetTrigger("Hurt");
         }
     }

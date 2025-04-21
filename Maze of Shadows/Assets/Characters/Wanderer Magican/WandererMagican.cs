@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WandererMagican : MonoBehaviour
+public class WandererMagican : MonoBehaviour, IDamageable
 {
     private SpriteRenderer spriteRenderer;
     private Animator animator;
@@ -10,6 +10,9 @@ public class WandererMagican : MonoBehaviour
 
     private bool isAttacking = false;
     private bool isCasting = false;
+
+    [Header("Health")]
+    public int Health = 5;
 
     private int hitCount = 0;
     private bool isDead = false;
@@ -105,8 +108,18 @@ public class WandererMagican : MonoBehaviour
     {
         if (magicPrefab != null && magicPoint != null)
         {
+            // 1) Spawn the projectile
             GameObject magic = Instantiate(magicPrefab, magicPoint.position, Quaternion.identity);
 
+            // 2) Immediately force it onto a higher Sorting Layer / Order
+            var sr = magic.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                sr.sortingLayerName = "Projectiles";  // make sure you’ve created this Sorting Layer
+                sr.sortingOrder = 500;            // anything above your tilemap’s order
+            }
+
+            // 3) Give it its velocity (and flip if needed)
             Rigidbody2D rb = magic.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
@@ -130,7 +143,7 @@ public class WandererMagican : MonoBehaviour
         hitCount++;
         Debug.Log("The magician hit! Current hits: " + hitCount);
 
-        if (hitCount >= 3)
+        if (hitCount >= Health)
         {
             Die();
         }
