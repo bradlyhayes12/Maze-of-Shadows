@@ -110,6 +110,13 @@ public class Lightningmage : MonoBehaviour, IDamageable
         {
             GameObject lightningbolt = Instantiate(LightningBoltPrefab, lightningPoint.position, Quaternion.identity);
 
+            var sr = lightningbolt.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                sr.sortingLayerName = "Projectiles";
+                sr.sortingOrder = 500;
+            }
+
             Rigidbody2D rb = lightningbolt.GetComponent<Rigidbody2D>();
             if(rb != null )
             {

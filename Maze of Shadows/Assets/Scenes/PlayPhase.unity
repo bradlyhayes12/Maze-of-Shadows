@@ -1117,6 +1117,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1551925927}
   - component: {fileID: 1551925926}
+  - component: {fileID: 1551925928}
   m_Layer: 0
   m_Name: PlayPhaseManager
   m_TagString: Untagged
@@ -1179,6 +1180,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1551925928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1551925925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f4ba8d397368c54bbc2caa9fb96adee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinPrefab: {fileID: 471741339654729964, guid: bf1f68669140823448cf796392c90afb, type: 3}
+  coinSpawnPoints: []
+  coinsToCollect: 4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

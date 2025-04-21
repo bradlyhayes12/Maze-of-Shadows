@@ -118,6 +118,13 @@ public class FireWizard : MonoBehaviour, IDamageable
         {
             GameObject fireball = Instantiate(fireballPrefab, firePoint.position, Quaternion.identity);
 
+            var sr = fireball.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                sr.sortingLayerName = "Projectiles";
+                sr.sortingOrder = 500;
+            }
+
             Rigidbody2D rb = fireball.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
