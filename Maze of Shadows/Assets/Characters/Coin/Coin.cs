@@ -20,6 +20,9 @@ public class Coin : MonoBehaviour
         Debug.Log($"[Coin] OnTriggerEnter2D with {other.name}");
         if (other.CompareTag("Player"))
         {
+            // tell manager we got colllected
+            PlayPhaseManager.Instance.CollectCoin();
+
             Debug.Log("[Coin] It’s the player – destroying coin.");
             Destroy(gameObject);
         }
