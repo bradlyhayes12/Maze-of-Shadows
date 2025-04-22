@@ -108,8 +108,10 @@ public class WandererMagican : MonoBehaviour, IDamageable
     {
         if (magicPrefab != null && magicPoint != null)
         {
+            Vector3 spawnPos = magicPoint.position;
+            Quaternion spawnRot = magicPoint.rotation;
             // 1) Spawn it
-            GameObject magic = Instantiate(magicPrefab, magicPoint.position, Quaternion.identity);
+            GameObject magic = Instantiate(magicPrefab, spawnPos, spawnRot);
 
             // 2 Grab Components
             var projSR = magic.GetComponent<SpriteRenderer>();

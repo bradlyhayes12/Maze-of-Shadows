@@ -116,11 +116,13 @@ public class FireWizard : MonoBehaviour, IDamageable
     {
         if (fireballPrefab == null || firePoint == null) return;
 
+        Vector3 spawnPos = firePoint.position;
+        Quaternion spawnRot = firePoint.rotation; 
         // 1) Spawn it
         GameObject fireball = Instantiate(
             fireballPrefab,
-            firePoint.position,
-            Quaternion.identity
+            spawnPos,
+            spawnRot
         );
 
         // 2) Grab components

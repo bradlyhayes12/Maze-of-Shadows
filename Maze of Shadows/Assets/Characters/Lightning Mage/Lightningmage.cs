@@ -108,8 +108,10 @@ public class Lightningmage : MonoBehaviour, IDamageable
     {
         if (LightningBoltPrefab != null && lightningPoint != null)
         {
+            Vector3 spawnPos = lightningPoint.position;
+            Quaternion spawnRot = lightningPoint.rotation;
             // Spawn Lightning Bolt
-            GameObject lightningbolt = Instantiate(LightningBoltPrefab, lightningPoint.position, Quaternion.identity);
+            GameObject lightningbolt = Instantiate(LightningBoltPrefab, spawnPos, spawnRot);
 
             // Grab Components
             var projSR = lightningbolt.GetComponent<SpriteRenderer>();
