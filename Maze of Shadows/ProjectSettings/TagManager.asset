@@ -40,6 +40,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Player
+    uniqueID: 3486794749
+    locked: 0
   - name: Coins
     uniqueID: 2063544167
     locked: 0
