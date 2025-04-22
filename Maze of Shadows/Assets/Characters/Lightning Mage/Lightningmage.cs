@@ -59,7 +59,7 @@ public class Lightningmage : MonoBehaviour, IDamageable
         isAttacking = true;
 
         //Stop movement while swinging
-        if (movementScript != null) 
+        if (movementScript != null)
             movementScript.enabled = false;
 
         if (animator != null)
@@ -90,14 +90,14 @@ public class Lightningmage : MonoBehaviour, IDamageable
     {
         isCasting = true;
 
-        if(movementScript != null) movementScript.enabled = false;
+        if (movementScript != null) movementScript.enabled = false;
         if (animator != null) animator.SetBool("isMoving", false);
 
         animator.SetTrigger("Cast");
 
         yield return new WaitForSeconds(lightningCastDuration);
 
-        if(movementScript != null) movementScript.enabled = true;
+        if (movementScript != null) movementScript.enabled = true;
 
         yield return new WaitForSeconds(lightningCoolDown - lightningCastDuration);
         isCasting = false;
@@ -108,34 +108,29 @@ public class Lightningmage : MonoBehaviour, IDamageable
     {
         if (LightningBoltPrefab != null && lightningPoint != null)
         {
-            Vector3 spawnPos = lightningPoint.position;
-            Quaternion spawnRot = lightningPoint.rotation;
-            // Spawn Lightning Bolt
-            GameObject lightningbolt = Instantiate(LightningBoltPrefab, spawnPos, spawnRot);
+            GameObject lightningbolt = Instantiate(LightningBoltPrefab, lightningPoint.position, Quaternion.identity);
 
-            // Grab Components
-            var projSR = lightningbolt.GetComponent<SpriteRenderer>();
-            var projRB = lightningbolt.GetComponent<Rigidbody2D>();
-
-            // Decide direction from our sprite renderer
-            bool facingLeft = spriteRenderer.flipX;
-            float dir = facingLeft ? -1 : +1;
-            
-            // Set Velocity
-            if (projRB != null)
+            var sr = lightningbolt.GetComponent<SpriteRenderer>();
+            if (sr != null)
             {
-                projRB.velocity = new Vector2(dir * lightningSpeed, 0f);
+                sr.sortingLayerName = "Projectiles";
+                sr.sortingOrder = 500;
             }
 
-            if (projSR != null)
+            Rigidbody2D rb = lightningbolt.GetComponent<Rigidbody2D>();
+            if (rb != null)
             {
-                projSR.flipX = facingLeft;
-                projSR.sortingLayerName = "Projectiles";
-                projSR.sortingOrder = 500;
+                float direction = transform.localScale.x > 0 ? 1 : -1;
+                rb.velocity = new Vector2(lightningSpeed * direction, 0);
+
+                if (direction < 0)
+                {
+                    Vector3 lightningScale = lightningbolt.transform.localScale;
+                    lightningScale.x *= -1; // Flip horizontally
+                    lightningbolt.transform.localScale = lightningScale;
+                }
             }
         }
-
-           
     }
 
     public void TakeHit()

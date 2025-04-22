@@ -60,7 +60,7 @@ public class FireWizard : MonoBehaviour, IDamageable
             movementScript.enabled = false;
 
         if (animator != null)
-            animator.SetBool("isMoving", false); 
+            animator.SetBool("isMoving", false);
 
         if (swordHitbox != null)
             swordHitbox.EnableHitbox();
@@ -114,36 +114,30 @@ public class FireWizard : MonoBehaviour, IDamageable
     // Called from animation event
     public void ShootFireball()
     {
-        if (fireballPrefab == null || firePoint == null) return;
-
-        Vector3 spawnPos = firePoint.position;
-        Quaternion spawnRot = firePoint.rotation; 
-        // 1) Spawn it
-        GameObject fireball = Instantiate(
-            fireballPrefab,
-            spawnPos,
-            spawnRot
-        );
-
-        // 2) Grab components
-        var projSR = fireball.GetComponent<SpriteRenderer>();
-        var projRB = fireball.GetComponent<Rigidbody2D>();
-
-        // 3) Decide direction from our spriteRenderer.flipX
-        bool facingLeft = spriteRenderer.flipX;
-        float dir = facingLeft ? -1f : +1f;
-
-        // 4) Set velocity
-        if (projRB != null)
-            projRB.velocity = new Vector2(dir * fireballSpeed, 0f);
-
-        // 5) Flip the projectile’s sprite the same way
-        if (projSR != null)
+        if (fireballPrefab != null && firePoint != null)
         {
-            // If we face left, flipX should be true
-            projSR.flipX = facingLeft;
-            projSR.sortingLayerName = "Projectiles";
-            projSR.sortingOrder = 500;
+            GameObject fireball = Instantiate(fireballPrefab, firePoint.position, Quaternion.identity);
+
+            var sr = fireball.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                sr.sortingLayerName = "Projectiles";
+                sr.sortingOrder = 500;
+            }
+
+            Rigidbody2D rb = fireball.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                float direction = transform.localScale.x > 0 ? 1 : -1;
+                rb.velocity = new Vector2(fireballSpeed * direction, 0);
+
+                if (direction < 0)
+                {
+                    Vector3 fireScale = fireball.transform.localScale;
+                    fireScale.x *= -1; // Flip horizontally
+                    fireball.transform.localScale = fireScale;
+                }
+            }
         }
     }
 

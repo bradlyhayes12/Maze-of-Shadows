@@ -108,30 +108,30 @@ public class WandererMagican : MonoBehaviour, IDamageable
     {
         if (magicPrefab != null && magicPoint != null)
         {
-            Vector3 spawnPos = magicPoint.position;
-            Quaternion spawnRot = magicPoint.rotation;
-            // 1) Spawn it
-            GameObject magic = Instantiate(magicPrefab, spawnPos, spawnRot);
+            // 1) Spawn the projectile
+            GameObject magic = Instantiate(magicPrefab, magicPoint.position, Quaternion.identity);
 
-            // 2 Grab Components
-            var projSR = magic.GetComponent<SpriteRenderer>();
-            var projRB = magic.GetComponent<Rigidbody2D>();
-
-            // 3 Decide direction from our spriteRenderer
-            bool facingLeft = spriteRenderer.flipX;
-            float dir = facingLeft ? -1f : +1f;
-
-            // 4 Set velocity
-            if (projRB != null)
+            // 2) Immediately force it onto a higher Sorting Layer / Order
+            var sr = magic.GetComponent<SpriteRenderer>();
+            if (sr != null)
             {
-                projRB.velocity = new Vector2(dir * magicSpeed, 0f);
+                sr.sortingLayerName = "Projectiles";  // make sure you’ve created this Sorting Layer
+                sr.sortingOrder = 500;            // anything above your tilemap’s order
             }
 
-            if (projSR != null)
+            // 3) Give it its velocity (and flip if needed)
+            Rigidbody2D rb = magic.GetComponent<Rigidbody2D>();
+            if (rb != null)
             {
-                projSR.flipX = facingLeft;
-                projSR.sortingLayerName = "Projectiles";
-                projSR.sortingOrder = 500;
+                float direction = transform.localScale.x > 0 ? 1 : -1;
+                rb.velocity = new Vector2(magicSpeed * direction, 0);
+
+                if (direction < 0)
+                {
+                    Vector3 magicScale = magic.transform.localScale;
+                    magicScale.x *= -1; // Flip horizontally
+                    magic.transform.localScale = magicScale;
+                }
             }
         }
     }
