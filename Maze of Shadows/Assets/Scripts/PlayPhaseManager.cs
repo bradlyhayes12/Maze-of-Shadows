@@ -55,14 +55,14 @@ public class PlayPhaseManager : MonoBehaviour
     {
         Debug.Log("All coins collected! Game Over!");
 
-//#if UNITY_EDITOR
-//        // Stop play mode in the Unity Editor
-//        UnityEditor.EditorApplication.isPlaying = false;
-//#else
-//        // Quit the application
-//        Application.Quit();
-//#endif
-//        // e.g. SceneManager.LoadScene("WinScene");
-//        // or show a UI panel, freeze input, etc.
+#if UNITY_EDITOR
+        // Stop play mode in the Unity Editor
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        // Quit the application
+        Application.Quit();
+#endif
+        // e.g. SceneManager.LoadScene("WinScene");
+        // or show a UI panel, freeze input, etc.
     }
 }

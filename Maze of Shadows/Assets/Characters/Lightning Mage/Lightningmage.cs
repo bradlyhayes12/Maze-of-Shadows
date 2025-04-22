@@ -108,29 +108,32 @@ public class Lightningmage : MonoBehaviour, IDamageable
     {
         if (LightningBoltPrefab != null && lightningPoint != null)
         {
+            // Spawn Lightning Bolt
             GameObject lightningbolt = Instantiate(LightningBoltPrefab, lightningPoint.position, Quaternion.identity);
 
-            var sr = lightningbolt.GetComponent<SpriteRenderer>();
-            if (sr != null)
+            // Grab Components
+            var projSR = lightningbolt.GetComponent<SpriteRenderer>();
+            var projRB = lightningbolt.GetComponent<Rigidbody2D>();
+
+            // Decide direction from our sprite renderer
+            bool facingLeft = spriteRenderer.flipX;
+            float dir = facingLeft ? -1 : +1;
+            
+            // Set Velocity
+            if (projRB != null)
             {
-                sr.sortingLayerName = "Projectiles";
-                sr.sortingOrder = 500;
+                projRB.velocity = new Vector2(dir * lightningSpeed, 0f);
             }
 
-            Rigidbody2D rb = lightningbolt.GetComponent<Rigidbody2D>();
-            if(rb != null )
+            if (projSR != null)
             {
-                float direction = transform.localScale.x > 0 ? 1 : -1;
-                rb.velocity = new Vector2(lightningSpeed * direction, 0);
-
-                if (direction < 0)
-                {
-                    Vector3 lightningScale = lightningbolt.transform.localScale;
-                    lightningScale.x *= -1; // Flip horizontally
-                    lightningbolt.transform.localScale = lightningScale;
-                }
+                projSR.flipX = facingLeft;
+                projSR.sortingLayerName = "Projectiles";
+                projSR.sortingOrder = 500;
             }
         }
+
+           
     }
 
     public void TakeHit()
