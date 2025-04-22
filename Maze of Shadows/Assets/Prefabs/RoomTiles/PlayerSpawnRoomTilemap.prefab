@@ -2497,7 +2497,7 @@ TilemapRenderer:
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
-  m_Mode: 1
+  m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
 --- !u!1001 &8448455867772578764
@@ -2563,6 +2563,10 @@ PrefabInstance:
     - target: {fileID: 6596776347862981762, guid: fe016a4deed6dba4f8a62efb23740c2f, type: 3}
       propertyPath: moveSpeed
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9183599551983399938, guid: fe016a4deed6dba4f8a62efb23740c2f, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
