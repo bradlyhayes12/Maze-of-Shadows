@@ -28,15 +28,22 @@ public class enemyFollow : MonoBehaviour
 
         float distance = Vector2.Distance(transform.position, player.position);
 
+        // Flip sprite to face player
+        Vector3 scale = transform.localScale;
+        if (player.position.x > transform.position.x)
+        {
+            scale.x = Mathf.Abs(scale.x); // Face right
+        }
+        else
+        {
+            scale.x = -Mathf.Abs(scale.x); // Face left
+        }
+        transform.localScale = scale;
+
         if (distance > attackRange)
         {
             // Move toward player
             transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
-
-            // Flip sprite
-            Vector3 scale = transform.localScale;
-            scale.x = (player.position.x < transform.position.x) ? -1 : 1;
-            transform.localScale = scale;
 
             animator?.SetBool("isMoving", true);
             animator?.SetBool("isAttacking", false);
@@ -49,3 +56,5 @@ public class enemyFollow : MonoBehaviour
         }
     }
 }
+    
+
