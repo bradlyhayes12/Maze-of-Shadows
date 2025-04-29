@@ -21,23 +21,26 @@ public class PlayPhaseManager : MonoBehaviour
             Destroy(gameObject);
         else
             Instance = this;
+
+        int size = Mathf.Clamp(GameSettings.SelectedBoardSize, 3, 5);
+        coinsToCollect = size + 2;
     }
 
     void Start()
     {
-        var rooms = GameObject.FindGameObjectsWithTag("Room");
+        //var rooms = GameObject.FindGameObjectsWithTag("Room");
 
-        foreach (var ro in rooms)
-        {
-            var bc = ro.GetComponent<Collider2D>();
-            SpawnAllCoins(bc);
-        }
+        //foreach (var ro in rooms)
+        //{
+        //    var bc = ro.GetComponent<Collider2D>();
+        //    SpawnAllCoins(bc);
+        //}
     }
 
-    void SpawnAllCoins(Collider2D bc)
-    {
-        Vector2 center = bc.bounds.center;
-    }
+    //void SpawnAllCoins(Collider2D bc)
+    //{
+    //    Vector2 center = bc.bounds.center;
+    //}
 
     /// <summary>
     /// Called by each Coin when the player picks it up.

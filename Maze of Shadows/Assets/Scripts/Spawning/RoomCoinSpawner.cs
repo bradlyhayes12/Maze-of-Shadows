@@ -45,7 +45,7 @@ public class RoomCoinSpawner : MonoBehaviour
             (positions[i], positions[j]) = (positions[j], positions[i]);
         }
 
-        // 4) Instantiate `count` coins at the first `count` offsets
+        // 4) Instantiate count coins at the first count offsets
         for (int i = 0; i < count; i++)
         {
             Vector2 spawnPos = center + positions[i];
