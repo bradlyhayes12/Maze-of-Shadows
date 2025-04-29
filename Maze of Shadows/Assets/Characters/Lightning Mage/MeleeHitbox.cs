@@ -34,28 +34,17 @@ public class MeleeHitbox : MonoBehaviour
         if (!col.enabled) return;
 
         // 2) only hit players
-        if (!other.CompareTag("Player")) return;
+        if (!other.CompareTag("Enemy")) return;
 
         // 3) and only hit each one once per swing
         if (hitThisSwing.Contains(other)) return;
         hitThisSwing.Add(other);
 
-        // 4) call their existing TakeHit()
-        var wizard = other.GetComponent<FireWizard>();
-        if (wizard != null)
+        var dmgReciver = GetComponent<SamurailHealth>();
+        if (dmgReciver != null)
         {
-            wizard.TakeHit();
-            Debug.Log($"Hit {other.name}!");
+            dmgReciver.TakeHit();
         }
-        var mage = other.GetComponent<Lightningmage>();
-        if (mage != null)
-        {
-            mage.TakeHit();
-        }
-        var magican = other.GetComponent<WandererMagican>();
-        if(magican != null)
-        {
-            magican.TakeHit();
-        }
+      
     }
 }

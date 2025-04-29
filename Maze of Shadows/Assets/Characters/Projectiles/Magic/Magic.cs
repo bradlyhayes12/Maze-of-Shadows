@@ -19,7 +19,7 @@ public class Magic : MonoBehaviour
         if (!other.CompareTag("Enemy")) return;
 
         // this will find *any* component on the Player that implements IDamageable
-        var dmgReceiver = other.GetComponent<IDamageable>();
+        var dmgReceiver = other.GetComponent<SamurailHealth>();
         if (dmgReceiver != null)
         {
             dmgReceiver.TakeHit();
