@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class SamurailHealth : MonoBehaviour
 {
-    
-public int maxHealth = 2;  // Start with 2 health
+    public int maxHealth = 1;  // fallback if Animator doesn't have Health param
     private int currentHealth;
 
     private Animator animator;
@@ -13,24 +12,37 @@ public int maxHealth = 2;  // Start with 2 health
     void Start()
     {
         animator = GetComponent<Animator>();
-        currentHealth = maxHealth;
 
-        // Set animator parameter at start
         if (animator != null)
         {
-            animator.SetInteger("Health", currentHealth);
+            int animatorHealth = animator.GetInteger("health");
+
+            if (animatorHealth > 0)
+            {
+                maxHealth = animatorHealth;
+            }
+        }
+
+        currentHealth = maxHealth;
+
+        // Sync Animator parameter to our starting health
+        if (animator != null)
+        {
+            animator.SetInteger("health", currentHealth);
         }
     }
 
     public void TakeHit()
     {
+        if (currentHealth <= 0) return; // Already dead, ignore hits
+
         currentHealth--;
 
         Debug.Log("Samurai hit! Current health: " + currentHealth);
 
         if (animator != null)
         {
-            animator.SetInteger("Health", currentHealth);
+            animator.SetInteger("health", currentHealth); // Update Animator parameter to match new health
         }
 
         if (currentHealth <= 0)
@@ -45,22 +57,23 @@ public int maxHealth = 2;  // Start with 2 health
 
         if (animator != null)
         {
-            animator.SetTrigger("Die"); // Assuming you have a death animation
+            animator.SetTrigger("dead"); // Play death animation trigger
         }
 
+        // Disable AI behavior
         enemyFollow followScript = GetComponent<enemyFollow>();
-    if (followScript != null)
-    {
-        followScript.enabled = false;
-    }
+        if (followScript != null)
+        {
+            followScript.enabled = false;
+        }
 
-    SamuraiShoot shootScript = GetComponent<SamuraiShoot>();
-    if (shootScript != null)
-    {
-        shootScript.enabled = false;
-    }
+        SamuraiShoot shootScript = GetComponent<SamuraiShoot>();
+        if (shootScript != null)
+        {
+            shootScript.enabled = false;
+        }
 
-        // Destroy after animation (optional)
+        // Destroy Samurai after death animation delay
         Destroy(gameObject, 2f);
     }
 }

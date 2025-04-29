@@ -2719,7 +2719,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  attackRange: 6
+  attackRange: 5
 --- !u!114 &4859261593350144628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2734,7 +2734,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrowPrefab: {fileID: 5203979136586204381, guid: 416eec1cac4289745a635423ef34eef6, type: 3}
   arrowSpawnPoint: {fileID: 4668265419359070844}
-  arrowSpeed: 20
+  arrowSpeed: 15
 --- !u!114 &5227863506272178620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2747,7 +2747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 297b9733f1e3ac04888e971ebe074139, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 2
+  maxHealth: 1
 --- !u!1001 &7735744675526427030
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2823,6 +2823,14 @@ PrefabInstance:
     - target: {fileID: 8695224545785598836, guid: 31806f62baa39f74eac53003d0c9b2c4, type: 3}
       propertyPath: m_IsTrigger
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8835040018533345090, guid: 31806f62baa39f74eac53003d0c9b2c4, type: 3}
+      propertyPath: magicSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8835040018533345090, guid: 31806f62baa39f74eac53003d0c9b2c4, type: 3}
+      propertyPath: magicCoolDown
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
