@@ -31,11 +31,17 @@ public class CharacterMovement : MonoBehaviour
         // Flip character by scaling, not by spriteRenderer.flipX
         if (movement.x > 0)
         {
-            spriteRenderer.flipX = false;
+            // Face right
+            Vector3 scale = transform.localScale;
+            scale.x = Mathf.Abs(scale.x); // Make sure x is positive
+            transform.localScale = scale;
         }
         else if (movement.x < 0)
         {
-            spriteRenderer.flipX = true;
+            // Face left
+            Vector3 scale = transform.localScale;
+            scale.x = -Mathf.Abs(scale.x); // Make sure x is negative
+            transform.localScale = scale;
         }
 
     }

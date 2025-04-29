@@ -16,10 +16,7 @@ public class Magic : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Player"))
-        {
-            
-        }
+        if (!other.CompareTag("Enemy")) return;
 
         // this will find *any* component on the Player that implements IDamageable
         var dmgReceiver = other.GetComponent<IDamageable>();

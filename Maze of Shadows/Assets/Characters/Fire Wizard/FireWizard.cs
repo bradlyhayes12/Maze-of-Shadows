@@ -60,7 +60,7 @@ public class FireWizard : MonoBehaviour, IDamageable
             movementScript.enabled = false;
 
         if (animator != null)
-            animator.SetBool("isMoving", false); 
+            animator.SetBool("isMoving", false);
 
         if (swordHitbox != null)
             swordHitbox.EnableHitbox();

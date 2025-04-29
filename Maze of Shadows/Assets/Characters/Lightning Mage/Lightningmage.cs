@@ -59,7 +59,7 @@ public class Lightningmage : MonoBehaviour, IDamageable
         isAttacking = true;
 
         //Stop movement while swinging
-        if (movementScript != null) 
+        if (movementScript != null)
             movementScript.enabled = false;
 
         if (animator != null)
@@ -90,14 +90,14 @@ public class Lightningmage : MonoBehaviour, IDamageable
     {
         isCasting = true;
 
-        if(movementScript != null) movementScript.enabled = false;
+        if (movementScript != null) movementScript.enabled = false;
         if (animator != null) animator.SetBool("isMoving", false);
 
         animator.SetTrigger("Cast");
 
         yield return new WaitForSeconds(lightningCastDuration);
 
-        if(movementScript != null) movementScript.enabled = true;
+        if (movementScript != null) movementScript.enabled = true;
 
         yield return new WaitForSeconds(lightningCoolDown - lightningCastDuration);
         isCasting = false;
@@ -118,7 +118,7 @@ public class Lightningmage : MonoBehaviour, IDamageable
             }
 
             Rigidbody2D rb = lightningbolt.GetComponent<Rigidbody2D>();
-            if(rb != null )
+            if (rb != null)
             {
                 float direction = transform.localScale.x > 0 ? 1 : -1;
                 rb.velocity = new Vector2(lightningSpeed * direction, 0);
