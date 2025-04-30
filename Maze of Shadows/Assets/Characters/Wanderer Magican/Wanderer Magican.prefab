@@ -204,7 +204,7 @@ MonoBehaviour:
   attackCoolDown: 2
   magicPrefab: {fileID: 3358180033129567003, guid: 92abdf54fbaadf6438fc0038b036abe9, type: 3}
   magicPoint: {fileID: 8715452231896100362}
-  magicSpeed: 1
+  magicSpeed: 6
   magicCastDuration: 1.5
   magicCoolDown: 4
   swordHitbox: {fileID: 331199414115628961}
