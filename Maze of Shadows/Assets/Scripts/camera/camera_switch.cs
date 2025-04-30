@@ -58,15 +58,22 @@ public class CameraTriggerZone : MonoBehaviour
             targetCamera.enabled = true;
             Debug.Log("✅ Activated camera: " + targetCamera.name);
         }
-
-        // Spawn samurai enemies
-        foreach (Transform spawnPoint in spawnPoints)
+        if(spawnPoints != null && spawnPoints.Length > 0 && samuraiPrefab != null)
         {
-            if (samuraiPrefab != null)
+            // Spawn samurai enemies
+            int enemiesToSpawn = Random.Range(1, 4); // Random number of enemies between 1 and 3
+
+            for (int i = 0; i < enemiesToSpawn; i++)
             {
-                GameObject enemy = Instantiate(samuraiPrefab, spawnPoint.position, Quaternion.identity);
+                if (spawnPoints.Length == 0 || samuraiPrefab == null)
+                    break;
+
+                int index = Random.Range(0, spawnPoints.Length);
+                Transform randomSpawn = spawnPoints[index];
+
+                GameObject enemy = Instantiate(samuraiPrefab, randomSpawn.position, Quaternion.identity);
                 spawnedEnemies.Add(enemy);
-                Debug.Log("Spawned enemy at: " + spawnPoint.position);
+                Debug.Log($"Spawned enemy {i + 1} at: {randomSpawn.position}");
             }
         }
 
