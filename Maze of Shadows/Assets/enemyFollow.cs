@@ -6,9 +6,13 @@ public class enemyFollow : MonoBehaviour
 {
     public float speed = 2.0f;
     public float attackRange = 1.5f;
+    public float attackCooldown = 2.0f;
 
     private Transform player;
     private Animator animator;
+    private float lastAttackTime = -Mathf.Infinity;
+    private float attackDuration = 0.5f; // How long isAttacking should stay true
+    private float attackTimer = 0f;
 
     void Start()
     {
@@ -28,16 +32,9 @@ public class enemyFollow : MonoBehaviour
 
         float distance = Vector2.Distance(transform.position, player.position);
 
-        // Flip sprite to face player
+        // Flip sprite
         Vector3 scale = transform.localScale;
-        if (player.position.x > transform.position.x)
-        {
-            scale.x = Mathf.Abs(scale.x); // Face right
-        }
-        else
-        {
-            scale.x = -Mathf.Abs(scale.x); // Face left
-        }
+        scale.x = (player.position.x > transform.position.x) ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
         transform.localScale = scale;
 
         if (distance > attackRange)
@@ -50,11 +47,29 @@ public class enemyFollow : MonoBehaviour
         }
         else
         {
-            // Stop and attack
             animator?.SetBool("isMoving", false);
-            animator?.SetBool("isAttacking", true);
+
+            // Trigger attack if cooldown is over
+            if (Time.time >= lastAttackTime + attackCooldown)
+            {
+                animator?.SetBool("isAttacking", true);
+                lastAttackTime = Time.time;
+                attackTimer = attackDuration;
+            }
+        }
+
+        // Turn off isAttacking after short delay
+        if (attackTimer > 0)
+        {
+            attackTimer -= Time.deltaTime;
+            if (attackTimer <= 0f)
+            {
+                animator?.SetBool("isAttacking", false);
+                animator?.SetBool("isMoving", true);
+            }
         }
     }
 }
+
     
 
