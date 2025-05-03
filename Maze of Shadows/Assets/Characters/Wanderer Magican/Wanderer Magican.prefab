@@ -206,7 +206,7 @@ MonoBehaviour:
   magicPoint: {fileID: 8715452231896100362}
   magicSpeed: 6
   magicCastDuration: 1.5
-  magicCoolDown: 4
+  magicCoolDown: 0
   swordHitbox: {fileID: 331199414115628961}
 --- !u!1 &1914459289803221656
 GameObject:

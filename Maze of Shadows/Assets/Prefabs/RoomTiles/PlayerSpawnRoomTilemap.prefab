@@ -4186,9 +4186,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7171469549684453239}
     m_Modifications:
+    - target: {fileID: 1469253843390737440, guid: fe016a4deed6dba4f8a62efb23740c2f, type: 3}
+      propertyPath: magicCoolDown
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1469253843390737440, guid: fe016a4deed6dba4f8a62efb23740c2f, type: 3}
+      propertyPath: magicCastDuration
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1692149013979767308, guid: fe016a4deed6dba4f8a62efb23740c2f, type: 3}
       propertyPath: m_Name
-      value: Wanderer Magican
+      value: q
       objectReference: {fileID: 0}
     - target: {fileID: 2869186831361450554, guid: fe016a4deed6dba4f8a62efb23740c2f, type: 3}
       propertyPath: m_LocalScale.x
