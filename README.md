@@ -48,12 +48,6 @@ Creating *Maze of Shadows* was an incredible journey into the world of game deve
 
 ---
 
-## 📸 Screenshots *(Add Yours!)*
-
-> *(Insert some images or GIFs here of your sliding puzzle mechanic, enemy combat, or in-game environment to really catch attention!)*
-
----
-
 ## 🚀 How to Run Locally
 
 Clone the repo and open it with Unity:
