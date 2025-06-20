@@ -1,31 +1,87 @@
-# CS4398.Group6
+# 🌀 Maze of Shadows
 
-# Unity and GitHub Workflow
+**Maze of Shadows** is an immersive dungeon-crawler adventure that combines classic combat mechanics with the strategic challenge of a **sliding puzzle**. Think fast, plan smart, and fight your way through a shifting maze of danger and mystery.
 
-## Cloning a Unity Project from GitHub
-Pulling a Unity project from GitHub is straightforward. Just follow these steps:
+---
 
-1. **Clone the repository** – Use GitHub Desktop or the command line to clone the existing repo.
-2. **Ensure the `.gitignore` file is included** – The `.gitignore` file in the repo is specifically configured for Unity.  
-   - It excludes unnecessary files that Unity generates.  
-   - This keeps the repository clean and reduces the size of pull/push operations.
+## 🎮 Gameplay Overview
 
-## Pushing Updates to GitHub
-When pushing changes to GitHub:
+You, the player, are dropped into the heart of a shadowy dungeon after crafting your own custom pathway using a sliding puzzle mechanic. Your goal?
 
-- Ensure that the `.gitignore` file is in the **root directory** of the Unity project.
-- This prevents unwanted files from being committed and keeps the repo optimized.
+- 🧩 **Slide Tiles to Build Your Path**
+- ⚔️ **Traverse the Maze & Battle Enemies**
+- 💰 **Collect Coins to Progress**
+- 🎯 **Complete the Mission and Escape**
 
-## Branching Strategy
-To maintain an organized workflow, we will use the following **branching system**:
+Each run is a unique test of brain and brawn.
 
-- **Main Branch (`main`)** – The **"golden branch"**, used for deployment and finalized work.
-- **Member Branches (Ideally 1 per team member)** – Each member works on their own branch.
-  - Example: member1, member2, etc.
+---
 
-### How to Work with Branches
-1. **Work on your own branch** – Develop features separately to avoid conflicts.
-2. **Merge changes properly**  
-   - Before merging into `main`, **resolve any merge conflicts**.
-   - Use **pull requests (PRs)** when ready to merge.
-3. **Keep `main` clean** – The `main` branch should only contain **tested, stable code**.
+## 🧠 How It Works
+
+1. **Sliding Puzzle Phase**
+   - You begin by arranging dungeon rooms like a puzzle.
+   - Strategically slide tiles to create the most optimal path.
+
+2. **Dungeon Phase**
+   - Enter the spawn room and start exploring.
+   - Defeat lurking enemies and collect coins.
+   - Navigate through your self-built dungeon and complete your objective.
+
+---
+
+## 🛠️ Built With
+
+- **Unity Engine** (Game World, Mechanics, Physics)
+- **C#** (Core Scripting, Enemy AI, Player Controls)
+
+---
+
+## ✨ What I Learned
+
+Creating *Maze of Shadows* was an incredible journey into the world of game development. Some of the skills I gained include:
+
+- Navigating and utilizing the **Unity Engine** effectively
+- Building **modular characters** and game environments
+- Implementing **AI behavior** to bring enemies to life
+- Designing an interactive puzzle that connects with real-time gameplay
+
+---
+
+## 📸 Screenshots *(Add Yours!)*
+
+> *(Insert some images or GIFs here of your sliding puzzle mechanic, enemy combat, or in-game environment to really catch attention!)*
+
+---
+
+## 🚀 Try It Yourself
+
+> *(If you have a download or web build link, drop it here!)*  
+> [Download Maze of Shadows](#)
+
+---
+
+## 💡 Future Plans
+
+- Multiplayer Co-op Mode 🔥  
+- More Puzzle Variants 🧩  
+- Boss Battles 💀  
+- Soundtrack and SFX Enhancements 🎧
+
+---
+
+## 🙌 Credits
+
+Developed with love by **[Your Name]**  
+Crafted as part of a personal game development journey to explore puzzle integration and AI in Unity.
+
+---
+
+## 📫 Connect With Me
+
+- GitHub: [YourUsername](https://github.com/YourUsername)
+- LinkedIn: [YourProfile](https://linkedin.com/in/YourProfile)
+
+---
+
+> *"The shadows only guide those brave enough to shape their path."* 🌒
