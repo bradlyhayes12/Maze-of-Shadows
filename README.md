@@ -72,7 +72,7 @@ Creating *Maze of Shadows* was an incredible journey into the world of game deve
 
 ## 🙌 Credits
 
-Developed with love by **[Your Name]**  
+Developed with by **Brad Hayes**  
 Crafted as part of a personal game development journey to explore puzzle integration and AI in Unity.
 
 ---
