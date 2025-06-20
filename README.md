@@ -79,8 +79,8 @@ Crafted as part of a personal game development journey to explore puzzle integra
 
 ## 📫 Connect With Me
 
-- GitHub: [YourUsername](https://github.com/YourUsername)
-- LinkedIn: [YourProfile](https://linkedin.com/in/YourProfile)
+- GitHub: [YourUsername](github.com/bradlyhayes12)
+- LinkedIn: [YourProfile](https://linkedin.com/in/brad-hayes-27a33a294/)
 
 ---
 
