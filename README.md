@@ -79,7 +79,7 @@ Crafted as part of a personal game development journey to explore puzzle integra
 
 ## 📫 Connect With Me
 
-- GitHub: [bradlyhayes12](github.com/bradlyhayes12)
+- GitHub: [bradlyhayes12](https://github.com/bradlyhayes12)
 - LinkedIn: [Connect with me](https://linkedin.com/in/brad-hayes-27a33a294/)
 
 ---
