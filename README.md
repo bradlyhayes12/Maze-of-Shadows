@@ -54,10 +54,12 @@ Creating *Maze of Shadows* was an incredible journey into the world of game deve
 
 ---
 
-## 🚀 Try It Yourself
+## 🚀 How to Run Locally
 
-> *(If you have a download or web build link, drop it here!)*  
-> [Download Maze of Shadows](#)
+Clone the repo and open it with Unity:
+
+git clone (https://github.com/bradlyhayes12/Maze-of-Shadows)
+
 
 ---
 
@@ -72,8 +74,7 @@ Creating *Maze of Shadows* was an incredible journey into the world of game deve
 
 ## 🙌 Credits
 
-Developed with by **Brad Hayes**  
-Crafted as part of a personal game development journey to explore puzzle integration and AI in Unity.
+Developed by **Brad Hayes**  
 
 ---
 
